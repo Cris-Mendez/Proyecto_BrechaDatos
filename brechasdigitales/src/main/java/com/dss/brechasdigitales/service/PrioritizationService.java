@@ -15,10 +15,18 @@ public class PrioritizationService {
     @Autowired
     private SimplifiedObservationRepository observationRepository;
     
-    public List<PriorityRegion> getPriorityRegions(String indicatorName, int minYear, int maxYear) {
+public List<PriorityRegion> getPriorityRegions(String indicatorName, int minYear, int maxYear, String ageLabel) {
         // Obtener datos relevantes
-        List<SimplifiedObservation> observations = observationRepository
-            .findByIndicatorNameAndTimePeriodBetween(indicatorName, minYear, maxYear);
+        List<SimplifiedObservation> observations;
+
+if (ageLabel != null && !ageLabel.isEmpty()) {
+    observations = observationRepository
+        .findByIndicatorNameAndTimePeriodBetweenAndAgeLabel(indicatorName, minYear, maxYear, ageLabel);
+} else {
+    observations = observationRepository
+        .findByIndicatorNameAndTimePeriodBetween(indicatorName, minYear, maxYear);
+}
+
         
         // Agrupar por país y calcular métricas de priorización
         Map<String, List<SimplifiedObservation>> byCountry = observations.stream()

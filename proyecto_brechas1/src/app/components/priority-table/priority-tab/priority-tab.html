@@ -33,6 +33,16 @@
     </div>
 
     <div class="filter-group">
+  <label for="age">Edad:</label>
+  <select id="age" [(ngModel)]="selectedAge" (ngModelChange)="loadPriorityRegions()">
+    <option *ngFor="let age of availableAges" [value]="age">
+      {{ age }}
+    </option>
+  </select>
+</div>
+
+
+    <div class="filter-group">
       <label for="minYear">Año inicial:</label>
       <input type="number" id="minYear" [(ngModel)]="minYear"
              (ngModelChange)="loadPriorityRegions()" min="2000" max="2025">

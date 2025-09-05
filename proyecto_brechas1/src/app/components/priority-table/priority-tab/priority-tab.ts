@@ -1,6 +1,6 @@
 import { Component, Renderer2 } from '@angular/core';
-import { CommonModule } from '@angular/common';   // 👈 Necesario para directivas como *ngIf, *ngFor y pipes
-import { FormsModule } from '@angular/forms';     // 👈 Necesario para inputs, select y binding [(ngModel)]
+import { CommonModule } from '@angular/common';   // Necesario para *ngIf, *ngFor y pipes
+import { FormsModule } from '@angular/forms';     // Necesario para inputs, select y binding [(ngModel)]
 import { PrioritizationService, PriorityRegion } from '../../../services/prioritization-service';
 
 @Component({
@@ -14,19 +14,23 @@ export class PriorityTabComponent {
   // ================================
   // VARIABLES DEL FILTRO Y DATOS
   // ================================
-  priorityRegions: PriorityRegion[] = [];   // 👈 Lista de regiones priorizadas que se mostrarán en la tabla
-  availableIndicators: string[] = [];       // 👈 Lista de indicadores que se cargarán en el <select>
-  selectedIndicator: string = '';           // 👈 Indicador actualmente seleccionado en el filtro
-  minYear: number = 2010;                   // 👈 Año mínimo seleccionado en el filtro
-  maxYear: number = 2025;                   // 👈 Año máximo seleccionado en el filtro
-  isLoading: boolean = false;               // 👈 Bandera para mostrar un spinner mientras carga
-  errorMessage: string = '';                // 👈 Mensaje de error si falla la carga de datos
-  isDarkMode: boolean = false;              // 👈 Bandera para saber si está en modo oscuro o claro
-  today: Date = new Date();                 // 👈 Fecha actual para "Última Actualización"
+  priorityRegions: PriorityRegion[] = [];   // Lista de regiones priorizadas
+  availableIndicators: string[] = [];       // Lista de indicadores disponibles
+  availableAges: string[] = [];             // 👈 NUEVO: lista de edades disponibles
+
+  selectedIndicator: string = '';           // Indicador actualmente seleccionado
+  selectedAge: string = '';                 // 👈 NUEVO: edad actualmente seleccionada
+
+  minYear: number = 2010;                   // Año mínimo
+  maxYear: number = 2025;                   // Año máximo
+  isLoading: boolean = false;               // Spinner de carga
+  errorMessage: string = '';                // Mensaje de error
+  isDarkMode: boolean = false;              // Tema oscuro/claro
+  today: Date = new Date();                 // Fecha actual
 
   // Control ver más/menos
-  visibleCount: number = 10;                // número de filas a mostrar inicialmente
-  isExpanded: boolean = false;              // si true, se muestran todas las filas
+  visibleCount: number = 10;
+  isExpanded: boolean = false;
 
   // Estado de exportación
   isExporting: boolean = false;
@@ -37,7 +41,8 @@ export class PriorityTabComponent {
   ) {}
 
   ngOnInit(): void {
-    this.loadAvailableIndicators();  // 👈 Al iniciar el componente, se cargan los indicadores
+    this.loadAvailableIndicators(); // Cargar indicadores al inicio
+    this.loadAvailableAges();       // 👈 NUEVO: cargar edades al inicio
 
     // Detectar si el body tiene dark-mode al iniciar
     this.isDarkMode = document.body.classList.contains('dark-mode');
@@ -62,12 +67,29 @@ export class PriorityTabComponent {
       next: (indicators) => {
         this.availableIndicators = indicators;
         if (indicators.length > 0) {
-          this.selectedIndicator = indicators[0];
+          this.selectedIndicator = indicators[0]; // Primer indicador por defecto
           this.loadPriorityRegions();
         }
       },
       error: (error) => {
         console.error('Error loading indicators:', error);
+      }
+    });
+  }
+
+  // ================================
+  // CARGAR LISTA DE EDADES
+  // ================================
+  loadAvailableAges(): void {
+    this.prioritizationService.getAvailableAges().subscribe({
+      next: (ages) => {
+        this.availableAges = ages;
+        if (ages.length > 0) {
+          this.selectedAge = ages[0]; // 👈 Selecciona la primera edad por defecto
+        }
+      },
+      error: (error) => {
+        console.error('Error loading ages:', error);
       }
     });
   }
@@ -80,14 +102,13 @@ export class PriorityTabComponent {
 
     this.isLoading = true;
     this.errorMessage = '';
-
-    // Al cargar nuevos datos, colapsamos la tabla a su estado inicial
-    this.isExpanded = false;
+    this.isExpanded = false; // Reset tabla
 
     this.prioritizationService.getPriorityRegions(
       this.selectedIndicator,
       this.minYear,
-      this.maxYear
+      this.maxYear,
+      this.selectedAge   // 👈 NUEVO: pasar edad al backend
     ).subscribe({
       next: (data) => {
         this.priorityRegions = data;
@@ -106,6 +127,13 @@ export class PriorityTabComponent {
     const select = event.target as HTMLSelectElement;
     this.selectedIndicator = select.value;
     this.loadPriorityRegions();
+  }
+
+  // EVENTO: CAMBIO DE EDAD
+  onAgeChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.selectedAge = select.value;
+    this.loadPriorityRegions(); // 👈 recargar tabla
   }
 
   // EVENTO: CAMBIO DE RANGO DE AÑOS
@@ -136,12 +164,14 @@ export class PriorityTabComponent {
     this.isExpanded = !this.isExpanded;
   }
 
-  // Obtén las filas actualmente visibles (se mantiene para la UI, no para exportar)
+  // Obtén las filas actualmente visibles
   private getDisplayedRegions(): PriorityRegion[] {
     return this.isExpanded ? this.priorityRegions : this.priorityRegions.slice(0, this.visibleCount);
   }
 
-  // util para limpiar el nombre del archivo
+  // ================================
+  // UTILIDADES PARA EXPORTACIÓN CSV
+  // ================================
   private sanitizeFilename(name: string): string {
     return (name || 'indicador')
       .toLowerCase()
@@ -149,13 +179,11 @@ export class PriorityTabComponent {
       .replace(/[^\w\-\.]/g, '');
   }
 
-  // util para formatear números sin separador de miles
   private toFixed2(value: number | null | undefined): string {
     if (value === null || value === undefined || Number.isNaN(value as number)) return '';
     return (value as number).toFixed(2);
   }
 
-  // util para escapar valores CSV cuando haga falta
   private csvEscape(val: string | number): string {
     let s = (val ?? '').toString();
     if (s.includes('"') || s.includes(',') || s.includes('\n') || s.includes('\r')) {
@@ -164,15 +192,14 @@ export class PriorityTabComponent {
     return s;
   }
 
-  // ⭐ CAMBIO: generar y descargar CSV con TODAS las filas (ignora ver más/menos)
+  // ⭐ EXPORTAR A CSV
   downloadCSV(): void {
     if (this.isLoading || this.priorityRegions.length === 0) return;
 
     try {
       this.isExporting = true;
 
-      // ⭐ CAMBIO: siempre tomamos todas las filas
-      const rows = this.priorityRegions.slice(); // copia defensiva
+      const rows = this.priorityRegions.slice(); // copia de todas las filas
 
       const headers = [
         'Prioridad',
@@ -200,12 +227,11 @@ export class PriorityTabComponent {
         lines.push(row.join(','));
       });
 
-      // Agregamos BOM para compatibilidad con Excel (UTF-8)
       const csvContent = '\uFEFF' + lines.join('\n');
 
       const indicatorSafe = this.sanitizeFilename(this.selectedIndicator);
-      // ⭐ CAMBIO: nombre consistente indicando "all"
-      const filename = `prioridades_${indicatorSafe}_${this.minYear}-${this.maxYear}_all.csv`;
+      const ageSafe = this.sanitizeFilename(this.selectedAge); // 👈 incluir edad en nombre del archivo
+      const filename = `prioridades_${indicatorSafe}_${ageSafe}_${this.minYear}-${this.maxYear}_all.csv`;
 
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -216,7 +242,6 @@ export class PriorityTabComponent {
       document.body.appendChild(link);
       link.click();
 
-      // Limpieza
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } catch (e) {

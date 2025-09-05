@@ -19,18 +19,35 @@ public class PrioritizationController {
     @Autowired
     private SimplifiedObservationRepository observationRepository; // ✅ ahora sí se inyecta
     
-    @GetMapping("/regions")
-    public List<PrioritizationService.PriorityRegion> getPriorityRegions(
-            @RequestParam String indicator,
-            @RequestParam(defaultValue = "2010") int minYear,
-            @RequestParam(defaultValue = "2025") int maxYear) {
-        
-        return prioritizationService.getPriorityRegions(indicator, minYear, maxYear);
-    }
+@GetMapping("/regions")
+public List<PrioritizationService.PriorityRegion> getPriorityRegions(
+        @RequestParam String indicator,
+        @RequestParam(defaultValue = "2010") int minYear,
+        @RequestParam(defaultValue = "2025") int maxYear,
+        @RequestParam(defaultValue = "All ages") String age   // 👈 NUEVO
+) {
+    return prioritizationService.getPriorityRegions(indicator, minYear, maxYear, age);
+}
+
     
     @GetMapping("/indicators")
     public List<String> getAvailableIndicators() {
         return observationRepository.findDistinctIndicatorNames();
+    }
+    
+    @GetMapping("/ages")
+    public List<String> getAvailableAges() {
+        return observationRepository.findDistinctAgeLabels();
+    }
+
+    @GetMapping("/sexes")
+    public List<String> getAvailableSexes() {
+        return observationRepository.findDistinctSexLabels();
+    }
+
+    @GetMapping("/urbanisations")
+    public List<String> getAvailableUrbanisations() {
+        return observationRepository.findDistinctUrbanisationLabels();
     }
 }
 

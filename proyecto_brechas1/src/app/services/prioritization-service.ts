@@ -20,20 +20,27 @@ export class PrioritizationService {
 
   constructor(private http: HttpClient) { }
 
-  getPriorityRegions(
-    indicator: string,
-    minYear: number = 2010,
-    maxYear: number = 2025
-  ): Observable<PriorityRegion[]> {
-    let params = new HttpParams()
-      .set('indicator', indicator)
-      .set('minYear', minYear.toString())
-      .set('maxYear', maxYear.toString());
+getPriorityRegions(
+  indicator: string,
+  minYear: number = 2010,
+  maxYear: number = 2025,
+  age: string = 'All ages'   // 👈 nuevo parámetro
+): Observable<PriorityRegion[]> {
+  let params = new HttpParams()
+    .set('indicator', indicator)
+    .set('minYear', minYear.toString())
+    .set('maxYear', maxYear.toString())
+    .set('age', age);   // 👈 pasar edad al backend
 
-    return this.http.get<PriorityRegion[]>(`${this.apiUrl}/regions`, { params });
-  }
+  return this.http.get<PriorityRegion[]>(`${this.apiUrl}/regions`, { params });
+}
+
 
   getAvailableIndicators(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/indicators`);
+  }
+
+  getAvailableAges(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/ages`);
   }
 }
