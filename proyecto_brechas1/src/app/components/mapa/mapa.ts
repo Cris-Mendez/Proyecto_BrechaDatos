@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import * as echarts from 'echarts';
 import { Observation, ObservationService } from '../../services/observation';
 
+import { interval, switchMap } from 'rxjs';
 type TooltipSize = { contentSize: number[]; viewSize: number[] };
 type TooltipRect = { x: number; y: number; width: number; height: number } | null;
 
@@ -35,12 +36,19 @@ export class MapaComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {}
 
-  ngAfterViewInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      setTimeout(() => this.inicializarMapa(), 0);
-      window.addEventListener('resize', () => this.chart?.resize());
-    }
+ ngAfterViewInit(): void {
+  if (isPlatformBrowser(this.platformId)) {
+    setTimeout(() => this.inicializarMapa(), 0);
+    window.addEventListener('resize', () => this.chart?.resize());
+
+    // Reconsultar datos cada 30 segundos
+    interval(30000).pipe(
+      switchMap(() => this.observationService.getAll())
+    ).subscribe(observations => {
+      this.actualizarDatos(observations);
+    });
   }
+}
 
   /** Posiciona el tooltip sin salirse del viewport */
   private tooltipPosition(
@@ -183,4 +191,28 @@ export class MapaComponent implements OnInit, AfterViewInit {
       alert('País no encontrado');
     }
   }
+
+  private actualizarDatos(observations: Observation[]) {
+  const grouped: { [key: string]: Observation } = {};
+  observations.forEach((obs) => {
+    if (!grouped[obs.countryName] || obs.timePeriod > grouped[obs.countryName].timePeriod) {
+      grouped[obs.countryName] = obs;
+    }
+  });
+
+  this.chartData = Object.values(grouped).map((obs) => ({
+    name: obs.countryName,
+    value: obs.obsValue,
+    indicatorName: obs.indicatorName,
+    timePeriod: obs.timePeriod,
+    unitMeasure: obs.unitMeasure,
+    sexLabel: obs.sexLabel,
+    ageLabel: obs.ageLabel,
+    urbanisationLabel: obs.urbanisationLabel,
+  }));
+
+  this.chart.setOption({
+    series: [{ data: this.chartData }],
+  });
+}
 }
