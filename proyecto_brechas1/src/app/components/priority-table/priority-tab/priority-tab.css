@@ -19,7 +19,7 @@ body.dark-mode {
 /* Contenedor principal */
 .prioritization-container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: rgba(255, 255, 255, 0.722); /* transparente tenue */
+  background: rgba(255, 255, 255, 0.722);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 25px;
@@ -27,21 +27,19 @@ body.dark-mode {
   border: 1px solid rgba(255, 255, 255, 0.403);
   max-width: 1200px;
   margin: 30px auto;
-  position: relative;
+  position: relative; /* para posicionar el botón de salida */
   transition: all 0.4s ease;
 }
 
 body.dark-mode .prioritization-container {
-  background: rgba(28, 28, 40, 0.436); /* transparente tenue en dark */
+  background: rgba(28, 28, 40, 0.436);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Quitamos el borde degradado */
-.prioritization-container::before {
-  display: none;
-}
+.prioritization-container::before { display: none; }
 
 .prioritization-container h2 {
   text-align: center;
@@ -56,6 +54,27 @@ body.dark-mode .prioritization-container h2 {
   text-shadow: 1px 1px 6px rgba(150, 153, 251, 0.4);
 }
 
+/* ===== Botón Salir/Volver (arriba a la derecha) ===== */
+.exit-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  background-color: #515daa;   /* mismo color base */
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(81, 93, 170, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.exit-button:hover {
+  background-color: #1e2a4e;   /* mismo hover */
+  transform: scale(1.05);
+}
+
 /* ===== Tarjetas KPI ===== */
 .kpi-cards {
   display: grid;
@@ -65,7 +84,7 @@ body.dark-mode .prioritization-container h2 {
 }
 
 .kpi-card {
-  background: #ffffff; /* fondo sólido */
+  background: #ffffff;
   padding: 15px;
   border-radius: 15px;
   text-align: center;
@@ -73,25 +92,13 @@ body.dark-mode .prioritization-container h2 {
   transition: transform 0.3s;
 }
 
-.kpi-card:hover {
-  transform: translateY(-5px);
-}
+.kpi-card:hover { transform: translateY(-5px); }
 
-.kpi-card h4 {
-  font-size: 16px;
-  color: #1e2a4e;
-}
+.kpi-card h4 { font-size: 16px; color: #1e2a4e; }
 
-.kpi-card p {
-  font-size: 20px;
-  font-weight: bold;
-  color: #515daa;
-}
+.kpi-card p { font-size: 20px; font-weight: bold; color: #515daa; }
 
-body.dark-mode .kpi-card {
-  background: #2b2b40; /* sólido en dark mode */
-  color: #f4f4f9;
-}
+body.dark-mode .kpi-card { background: #2b2b40; color: #f4f4f9; }
 
 /* ===== Filtros ===== */
 .filters {
@@ -115,9 +122,7 @@ body.dark-mode .kpi-card {
   color: #515daa;
 }
 
-body.dark-mode .filter-group label {
-  color: #9699fb;
-}
+body.dark-mode .filter-group label { color: #9699fb; }
 
 .filter-group input,
 .filter-group select {
@@ -125,7 +130,7 @@ body.dark-mode .filter-group label {
   border: 1px solid #9699fb;
   border-radius: 8px;
   font-size: 14px;
-  background-color: #ffffff; /* sólido */
+  background-color: #ffffff;
   color: #140f07;
   outline: none;
   transition: 0.3s;
@@ -133,7 +138,7 @@ body.dark-mode .filter-group label {
 
 body.dark-mode .filter-group input,
 body.dark-mode .filter-group select {
-  background-color: #2b2b40; /* sólido en dark */
+  background-color: #2b2b40;
   color: #f4f4f9;
   border: 1px solid #515daa;
 }
@@ -151,16 +156,9 @@ button {
   box-shadow: 0 4px 8px rgba(81, 93, 170, 0.3);
 }
 
-button:hover {
-  background-color: #1e2a4e;
-  transform: scale(1.05);
-}
+button:hover { background-color: #1e2a4e; transform: scale(1.05); }
 
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  box-shadow: none;
-}
+button:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none; }
 
 /* ===== Mensajes ===== */
 .error-message {
@@ -172,19 +170,8 @@ button:disabled {
   margin-bottom: 10px;
 }
 
-.loading {
-  color: #515daa;
-  font-weight: bold;
-  text-align: center;
-  margin: 20px 0;
-}
-
-.no-data {
-  color: #ff9f1c;
-  font-weight: bold;
-  text-align: center;
-  margin: 20px 0;
-}
+.loading { color: #515daa; font-weight: bold; text-align: center; margin: 20px 0; }
+.no-data { color: #ff9f1c; font-weight: bold; text-align: center; margin: 20px 0; }
 
 /* ===== Tabla ===== */
 .priority-table {
@@ -192,26 +179,17 @@ button:disabled {
   border-collapse: collapse;
   border-radius: 12px;
   overflow: hidden;
-  background-color: #ffffff; /* tabla sólida */
+  background-color: #ffffff;
   box-shadow: 0 3px 8px rgba(20, 15, 7, 0.15);
   margin-top: 15px;
 }
 
-.priority-table thead {
-  background-color: rgba(30, 42, 78, 0.9);
-  color: white;
-}
+.priority-table thead { background-color: rgba(30, 42, 78, 0.9); color: white; }
 
-body.dark-mode .priority-table {
-  background-color: #1c1c28; /* sólida en dark */
-}
+body.dark-mode .priority-table { background-color: #1c1c28; }
+body.dark-mode .priority-table thead { background-color: rgba(81, 93, 170, 0.9); }
 
-body.dark-mode .priority-table thead {
-  background-color: rgba(81, 93, 170, 0.9);
-}
-
-.priority-table th,
-.priority-table td {
+.priority-table th, .priority-table td {
   text-align: center;
   padding: 12px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -225,23 +203,15 @@ body.dark-mode .priority-table th {
 }
 
 /* Filas pares */
-.priority-table tbody tr:nth-child(even) {
-  background-color: rgba(242, 224, 246, 0.3);
-}
-
-body.dark-mode .priority-table tbody tr:nth-child(even) {
-  background-color: rgba(81, 93, 170, 0.25);
-}
+.priority-table tbody tr:nth-child(even) { background-color: rgba(242, 224, 246, 0.3); }
+body.dark-mode .priority-table tbody tr:nth-child(even) { background-color: rgba(81, 93, 170, 0.25); }
 
 /* Hover */
 .priority-table tbody tr:hover {
   background-color: rgba(150, 153, 251, 0.3);
   transition: 0.3s;
 }
-
-body.dark-mode .priority-table tbody tr:hover {
-  background-color: rgba(150, 153, 251, 0.35);
-}
+body.dark-mode .priority-table tbody tr:hover { background-color: rgba(150, 153, 251, 0.35); }
 
 /* ===== Score bar ===== */
 .score-bar {
@@ -269,10 +239,7 @@ body.dark-mode .priority-table tbody tr:hover {
   font-weight: bold;
   color: #140f07;
 }
-
-body.dark-mode .score-bar span {
-  color: #f4f4f9;
-}
+body.dark-mode .score-bar span { color: #f4f4f9; }
 
 /* Controles ver más/menos */
 .show-more-container {
@@ -282,12 +249,5 @@ body.dark-mode .score-bar span {
   justify-content: center;
   margin-top: 12px;
 }
-
-.show-more-btn {
-  min-width: 170px;
-}
-
-.hint {
-  opacity: 0.8;
-  font-size: 12px;
-}
+.show-more-btn { min-width: 170px; }
+.hint { opacity: 0.8; font-size: 12px; }

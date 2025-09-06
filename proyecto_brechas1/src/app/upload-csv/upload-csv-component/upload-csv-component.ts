@@ -35,6 +35,8 @@ export class UploadCsvComponent implements OnInit {
 
   isUploading = false; // nueva bandera
 
+  /** 🔑 NUEVO: controla la visibilidad del botón "Ir a Prioridad" */
+  csvLoaded = false;
 
   // === NUEVO: control de tabla API ===
   showAllPopulation = false;     // mostrar todos los registros o solo 18
@@ -116,7 +118,6 @@ export class UploadCsvComponent implements OnInit {
         }
       }
     },
-    // pequeño padding para evitar recortes de etiquetas si tienes muchos años
     layout: { padding: { bottom: 24, top: 4, left: 4, right: 4 } },
     scales: {
       x: {
@@ -168,7 +169,10 @@ export class UploadCsvComponent implements OnInit {
       alert("⚠ Selecciona un archivo primero.");
       return;
     }
-     this.isUploading = true; // 👈 mostrar mensaje en HTML
+
+    // 🔒 Oculta el botón mientras se sube y procesa
+    this.csvLoaded = false;
+    this.isUploading = true;
 
     this.dataService.uploadCsv(this.selectedFile).subscribe({
       next: (event: HttpEvent<any>) => {
@@ -180,10 +184,13 @@ export class UploadCsvComponent implements OnInit {
             : (event.body as string[]);
 
           this.procesarCsv(rows);
+
+          // ✅ Mostrar el botón: CSV ya procesado
+          this.csvLoaded = (this.lineChartData.labels?.length ?? 0) > 0;
+
           alert("Archivo subido correctamente.");
           this.progress = 0;
-                  // 👇 ocultar mensaje después de la alerta
-        this.isUploading = false;
+          this.isUploading = false;
 
           this.loadChartDataFromDB();
         }
@@ -192,8 +199,9 @@ export class UploadCsvComponent implements OnInit {
         console.error("❌ Error al subir:", err.message);
         alert("Error al subir archivo CSV");
         this.progress = 0;
-              // 👇 ocultar mensaje después de la alerta
-      this.isUploading = false;
+        this.isUploading = false;
+        // Mantener oculto si falló
+        this.csvLoaded = false;
       }
     });
   }
@@ -331,6 +339,11 @@ export class UploadCsvComponent implements OnInit {
 
         this.lineChartData = { labels: years, datasets };
         this.chart?.update();
+
+        // 🟢 Si ya hay datos en DB, considera el CSV como “cargado”
+        if ((years?.length ?? 0) > 0) {
+          this.csvLoaded = true;
+        }
 
         this.updateBarChart();
       },

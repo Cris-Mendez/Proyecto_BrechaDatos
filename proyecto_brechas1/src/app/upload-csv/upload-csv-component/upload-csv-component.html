@@ -52,7 +52,8 @@
           <button class="tab-btn" [class.active]="activeTab === 'api'" (click)="setActiveTab('api')">Conectar API</button>
         </div>
 
-        <div class="navigation-buttons">
+        <!-- 🔒 Oculto hasta que cargue CSV -->
+        <div class="navigation-buttons" *ngIf="csvLoaded">
           <button class="btn btn-primary" (click)="goToPriorizacion()">Ir a Prioridad</button>
         </div>
 
@@ -68,11 +69,10 @@
             Subir CSV
           </button>
 
-<!-- Mensaje formal de carga -->
-<div *ngIf="isUploading" class="uploading-msg">
-  📂 Archivo cargándose… este proceso puede tardar unos minutos, este atento a la alerta.
-</div>
-
+          <!-- Mensaje formal de carga -->
+          <div *ngIf="isUploading" class="uploading-msg">
+            📂 Archivo cargándose… este proceso puede tardar unos minutos, este atento a la alerta.
+          </div>
         </div>
 
         <!-- 🌐 Pestaña: API -->

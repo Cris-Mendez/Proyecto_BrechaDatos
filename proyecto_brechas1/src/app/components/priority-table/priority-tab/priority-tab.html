@@ -1,4 +1,11 @@
 <div class="prioritization-container" [class.dark-mode]="isDarkMode">
+  <!-- Botón Salir/Volver (arriba a la derecha) -->
+  <button class="exit-button"
+          (click)="goBack()"
+          aria-label="Volver a cargar CSV">
+    ← Salir
+  </button>
+
   <h2>Motor de Priorización de Inversión en Inclusión Digital</h2>
 
   <!-- Tarjetas KPI -->
@@ -33,14 +40,13 @@
     </div>
 
     <div class="filter-group">
-  <label for="age">Edad:</label>
-  <select id="age" [(ngModel)]="selectedAge" (ngModelChange)="loadPriorityRegions()">
-    <option *ngFor="let age of availableAges" [value]="age">
-      {{ age }}
-    </option>
-  </select>
-</div>
-
+      <label for="age">Edad:</label>
+      <select id="age" [(ngModel)]="selectedAge" (ngModelChange)="loadPriorityRegions()">
+        <option *ngFor="let age of availableAges" [value]="age">
+          {{ age }}
+        </option>
+      </select>
+    </div>
 
     <div class="filter-group">
       <label for="minYear">Año inicial:</label>
@@ -54,11 +60,10 @@
              (ngModelChange)="loadPriorityRegions()" min="2000" max="2025">
     </div>
 
-    <!-- ⭐ CAMBIO: botón descarga SIEMPRE todas las filas -->
+    <!-- Descarga CSV (todas las filas) -->
     <button (click)="downloadCSV()"
             [disabled]="isLoading || priorityRegions.length === 0 || isExporting"
             title="Descargar TODOS los datos de la tabla como CSV">
-
       {{ isExporting ? 'Descargando…' : 'Descargar CSV' }}
     </button>
   </div>
@@ -87,7 +92,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Se muestran 10 filas si está plegado; todas si está expandido -->
         <tr *ngFor="let region of (isExpanded ? priorityRegions : (priorityRegions | slice:0:visibleCount)); let i = index"
             [class]="getPriorityClass(region.priorityScore)">
           <td>{{ i + 1 }}</td>
