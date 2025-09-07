@@ -216,3 +216,172 @@ nav button:active {
   transform: scale(0.96);
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
+
+footer {
+  text-align: center;
+  padding: 20px 10px;
+  margin-top: 30px;
+  color: var(--text-color);
+}
+
+footer hr {
+  border: 0;
+  border-top: 3px solid #000000; /* Negro y más grueso */
+  margin-bottom: 10px;
+}
+
+.footer-text {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* =========================================================
+   📱 MEDIA QUERIES (Responsive)
+   1024px: Tablet horizontal
+   768px : Tablet vertical / Phablet
+   576px : Móvil
+========================================================= */
+
+/* <= 1024px: orden y espaciados más cómodos en tablet */
+@media (max-width: 1024px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  .tabs button {
+    padding: 8px 14px;
+  }
+
+  .action-buttons {
+    flex-wrap: wrap;
+  }
+}
+
+/* <= 768px: apilar navegación, ampliar inputs y botones, tipografías más pequeñas */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  nav .app-title {
+    margin-left: 0;
+    font-size: 16px;
+  }
+
+  nav a {
+    padding: 6px 10px;
+  }
+
+  .navigation-buttons button {
+    width: 100%;
+    font-size: 15px;
+    padding: 10px 14px;
+  }
+
+  .tabs {
+    width: 100%;
+  }
+
+  .tabs button {
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 10px 8px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .progress-bar {
+    height: 16px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .action-buttons button {
+    width: 100%;
+    padding: 10px 12px;
+  }
+
+  footer .footer-text {
+    font-size: 13px;
+  }
+}
+
+/* <= 576px: móvil — todo a una columna, mayor click área, fuentes adaptadas */
+@media (max-width: 576px) {
+  body {
+    font-size: 15px;
+  }
+
+  h1 { font-size: 22px; }
+  h2 { font-size: 20px; }
+  h3 { font-size: 18px; }
+
+  nav {
+    padding: 8px;
+  }
+
+  nav a {
+    display: inline-block;
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  nav button {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .tabs {
+    gap: 6px;
+  }
+
+  .tabs button {
+    font-size: 14px;
+    padding: 8px 10px;
+    border-bottom-width: 2px;
+  }
+
+  .navigation-buttons button {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .progress-bar {
+    height: 14px;
+    border-radius: 8px;
+  }
+
+  .action-buttons button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  footer {
+    padding: 16px 8px;
+    margin-top: 20px;
+  }
+
+  footer hr {
+    border-top-width: 2px;
+  }
+
+  .footer-text {
+    font-size: 12px;
+  }
+}

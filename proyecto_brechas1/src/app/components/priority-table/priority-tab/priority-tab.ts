@@ -15,59 +15,59 @@ export class PriorityTabComponent {
   // ================================
   // VARIABLES DEL FILTRO Y DATOS
   // ================================
-  priorityRegions: PriorityRegion[] = [];
-  availableIndicators: string[] = [];
-  availableAges: string[] = [];
+  priorityRegions: PriorityRegion[] = []; // Lista de regiones priorizadas
+  availableIndicators: string[] = [];     // Lista de indicadores disponibles
+  availableAges: string[] = [];           // Lista de edades disponibles
 
-  selectedIndicator: string = '';
-  selectedAge: string = '';
+  selectedIndicator: string = ''; // Indicador seleccionado
+  selectedAge: string = '';       // Edad seleccionada
 
-  minYear: number = 2010;
-  maxYear: number = 2025;
-  isLoading: boolean = false;
-  errorMessage: string = '';
-  isDarkMode: boolean = false;
-  today: Date = new Date();
+  minYear: number = 2010; // Año inicial (filtro)
+  maxYear: number = 2025; // Año final (filtro)
+  isLoading: boolean = false; // Estado de carga
+  errorMessage: string = '';  // Mensajes de error
+  isDarkMode: boolean = false; // Modo oscuro/ligero
+  today: Date = new Date();    // Fecha actual
 
-  // Control ver más/menos
+  // Control ver más/menos en la tabla
   visibleCount: number = 10;
   isExpanded: boolean = false;
 
-  // Estado de exportación
+  // Estado de exportación a CSV
   isExporting: boolean = false;
 
   constructor(
-    private prioritizationService: PrioritizationService,
-    private renderer: Renderer2,
-    private router: Router
+    private prioritizationService: PrioritizationService, // Servicio para obtener datos
+    private renderer: Renderer2,                          // Renderer2 para manipular DOM de forma segura
+    private router: Router                                // Router para navegación
   ) {}
 
   ngOnInit(): void {
+    // Cargar indicadores y edades disponibles
     this.loadAvailableIndicators();
     this.loadAvailableAges();
 
-    // Detectar tema inicial
+    // Detectar si el body tiene modo oscuro activo
     this.isDarkMode = document.body.classList.contains('dark-mode');
 
-    // Observar cambios en el body para actualizar el flag
+    // Observar cambios de clases en el body para actualizar el flag de tema
     const observer = new MutationObserver(() => {
       this.isDarkMode = document.body.classList.contains('dark-mode');
     });
     observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
-    // Mantener actualizada la fecha cada minuto
+    // Actualizar la fecha automáticamente cada minuto
     setInterval(() => { this.today = new Date(); }, 60000);
   }
 
   // ====== Navegación: Salir / Volver ======
   goBack(): void {
-    // 1) intenta volver si hay historial
+    // Si hay historial, regresar
     if (window.history.length > 1) {
       window.history.back();
       return;
     }
-    // 2) si no hay historial, ir directamente a la vista de carga CSV
-    // Ajusta la ruta si usas un path distinto (por ejemplo, '/upload-csv')
+    // Si no hay historial, navegar a la pantalla de carga de CSV
     this.router.navigateByUrl('/upload-csv');
   }
 
@@ -79,8 +79,8 @@ export class PriorityTabComponent {
       next: (indicators) => {
         this.availableIndicators = indicators;
         if (indicators.length > 0) {
-          this.selectedIndicator = indicators[0];
-          this.loadPriorityRegions();
+          this.selectedIndicator = indicators[0]; // Selecciona el primero por defecto
+          this.loadPriorityRegions();             // Carga regiones priorizadas con ese indicador
         }
       },
       error: (error) => {
@@ -97,7 +97,7 @@ export class PriorityTabComponent {
       next: (ages) => {
         this.availableAges = ages;
         if (ages.length > 0) {
-          this.selectedAge = ages[0];
+          this.selectedAge = ages[0]; // Selecciona la primera edad por defecto
         }
       },
       error: (error) => {
@@ -114,7 +114,7 @@ export class PriorityTabComponent {
 
     this.isLoading = true;
     this.errorMessage = '';
-    this.isExpanded = false; // Reset tabla
+    this.isExpanded = false; // Resetear expansión de tabla
 
     this.prioritizationService.getPriorityRegions(
       this.selectedIndicator,
@@ -123,7 +123,7 @@ export class PriorityTabComponent {
       this.selectedAge
     ).subscribe({
       next: (data) => {
-        this.priorityRegions = data;
+        this.priorityRegions = data; // Guardar resultados
         this.isLoading = false;
       },
       error: (error) => {
@@ -159,14 +159,14 @@ export class PriorityTabComponent {
     this.loadPriorityRegions();
   }
 
-  // CLASES CSS SEGÚN PRIORIDAD
+  // Devuelve la clase CSS según el score de prioridad
   getPriorityClass(score: number): string {
     if (score > 0.7) return 'high-priority';
     if (score > 0.4) return 'medium-priority';
     return 'low-priority';
   }
 
-  // CLASES CSS DE TABLA SEGÚN TEMA
+  // Devuelve la clase CSS de la tabla según el tema
   getTableThemeClass(): string {
     return this.isDarkMode ? 'table-dark' : 'table-light';
   }
@@ -176,7 +176,7 @@ export class PriorityTabComponent {
     this.isExpanded = !this.isExpanded;
   }
 
-  // Obtén las filas actualmente visibles
+  // Devuelve las filas actualmente visibles (según expansión o límite)
   private getDisplayedRegions(): PriorityRegion[] {
     return this.isExpanded ? this.priorityRegions : this.priorityRegions.slice(0, this.visibleCount);
   }
@@ -184,6 +184,8 @@ export class PriorityTabComponent {
   // ================================
   // UTILIDADES PARA EXPORTACIÓN CSV
   // ================================
+
+  // Sanitiza el nombre del archivo (quita caracteres inválidos)
   private sanitizeFilename(name: string): string {
     return (name || 'indicador')
       .toLowerCase()
@@ -191,11 +193,13 @@ export class PriorityTabComponent {
       .replace(/[^\w\-\.]/g, '');
   }
 
+  // Convierte valores a string con 2 decimales
   private toFixed2(value: number | null | undefined): string {
     if (value === null || value === undefined || Number.isNaN(value as number)) return '';
     return (value as number).toFixed(2);
   }
 
+  // Escapa valores con comillas o saltos de línea para CSV
   private csvEscape(val: string | number): string {
     let s = (val ?? '').toString();
     if (s.includes('"') || s.includes(',') || s.includes('\n') || s.includes('\r')) {
@@ -204,15 +208,16 @@ export class PriorityTabComponent {
     return s;
   }
 
-  // ⭐ EXPORTAR A CSV
+  // ⭐ Exportar datos a un archivo CSV descargable
   downloadCSV(): void {
     if (this.isLoading || this.priorityRegions.length === 0) return;
 
     try {
       this.isExporting = true;
 
-      const rows = this.priorityRegions.slice(); // copia de todas las filas
+      const rows = this.priorityRegions.slice(); // Copia de todas las filas
 
+      // Encabezados de la tabla
       const headers = [
         'Prioridad',
         'País',
@@ -226,6 +231,7 @@ export class PriorityTabComponent {
       const lines: string[] = [];
       lines.push(headers.join(','));
 
+      // Agregar filas al CSV
       rows.forEach((region, idx) => {
         const row = [
           (idx + 1).toString(),
@@ -239,12 +245,15 @@ export class PriorityTabComponent {
         lines.push(row.join(','));
       });
 
+      // Contenido del CSV (con BOM para compatibilidad con Excel)
       const csvContent = '\uFEFF' + lines.join('\n');
 
+      // Nombre de archivo amigable
       const indicatorSafe = this.sanitizeFilename(this.selectedIndicator);
       const ageSafe = this.sanitizeFilename(this.selectedAge);
       const filename = `prioridades_${indicatorSafe}_${ageSafe}_${this.minYear}-${this.maxYear}_all.csv`;
 
+      // Crear blob y disparar descarga
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
 
@@ -254,6 +263,7 @@ export class PriorityTabComponent {
       document.body.appendChild(link);
       link.click();
 
+      // Limpiar elementos temporales
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } catch (e) {

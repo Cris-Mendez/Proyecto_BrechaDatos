@@ -51,11 +51,78 @@ html, body { overflow-x: hidden; }
 .compare-canvas { height: 360px; padding: 8px 12px 12px 12px; width: 100%; max-width: 100%; overflow: hidden; }
 
 /* ================== RESPONSIVO ================== */
+/* <= 1200px: reducir un poco alturas/espaciados para pantallas medianas */
+@media (max-width: 1200px) {
+  .layout { gap: 20px; }
+  .chart-container { height: 290px; }
+  .compare-canvas { height: 340px; }
+  .compare-header { flex-wrap: wrap; row-gap: 8px; }
+}
+
+/* <= 1024px: dos columnas aún, pero más compactas */
+@media (max-width: 1024px) {
+  .layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+  .chart-container { height: 280px; }
+  .compare-canvas { height: 320px; }
+  .tabs { flex-wrap: wrap; row-gap: 6px; }
+}
+
+/* <= 900px: una columna (lo que ya tenías) + ajustes de tamaños */
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; }
   .chart-container { height: 280px; }
   .legend-bar { max-height: 150px; }
   .compare-canvas { height: 300px; }
+}
+
+/* <= 768px: móvil grande / tablet vertical */
+@media (max-width: 768px) {
+  .compare-header h3 { font-size: 1rem; }
+  .muted { font-size: 0.85rem; }
+  .legend-check { font-size: 13px; }
+  .legend-bar li { font-size: 12.5px; padding: 4px; }
+  .tabs { width: 100%; }
+  .tabs .tab-btn, .tabs button { flex: 1 1 auto; text-align: center; padding: 10px 8px; }
+
+  .navigation-buttons { display: flex; }
+  .navigation-buttons .btn,
+  .navigation-buttons button { width: 100%; }
+
+  .chart-container { height: 260px; }
+  .compare-canvas { height: 280px; }
+}
+
+/* <= 576px: móvil — apilar inputs/botones y ampliar áreas de toque */
+@media (max-width: 576px) {
+  .compare-header { padding: 10px 10px 0; }
+  .compare-legend { gap: 10px; }
+
+  .chart-card { border-radius: 8px; }
+  .legend-bar { max-height: 140px; padding: 0 6px 6px; }
+
+  /* Fila file input + botón: apilar en una columna */
+  .file-row{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .tab-content input[type="file"]{
+    width: 100%;
+    font-size: 13.5px;
+    padding: 10px 12px;
+  }
+
+  .tab-content .btn.btn-success,
+  .tab-content .btn.btn-warning {
+    width: 100%;
+  }
+
+  .tabs { gap: 6px; }
+  .tabs .tab-btn, .tabs button { font-size: 14px; padding: 8px 10px; }
+
+  .chart-container { height: 240px; }
+  .compare-canvas { height: 260px; }
 }
 
 /* ======== SOLO TABLA API (Angular-friendly theming) ======== */
@@ -96,6 +163,7 @@ html, body { overflow-x: hidden; }
 
   --api-warn-bg: #f59e0b; --api-warn-bg-hover:#d97706; --api-warn-text:#111827; --api-warn-ring:#fbbf24; --api-warn-shadow: rgba(245,158,11,.30);
 }
+
 :host-context(.dark), :host-context([data-theme="dark"]){
   --api-card-border: rgba(255,255,255,.10);
   --api-header-bg: linear-gradient(90deg, rgba(17,24,39,0.90) 0%, rgba(59,130,246,0.25) 100%);
@@ -172,6 +240,7 @@ html, body { overflow-x: hidden; }
   font-size: 14px;
   color: var(--file-btn-text);
 }
+
 .tab-content input[type="file"]::file-selector-button {
   margin-right: 10px;
   padding: 10px 14px;
@@ -183,10 +252,12 @@ html, body { overflow-x: hidden; }
   transition: background-color .2s ease, box-shadow .2s ease, transform .05s ease;
   box-shadow: 0 6px 16px rgba(0,0,0,.06);
 }
+
 .tab-content input[type="file"]::file-selector-button:hover {
   background: var(--file-btn-hover);
   box-shadow: 0 10px 22px rgba(0,0,0,.08);
 }
+
 .tab-content input[type="file"]::file-selector-button:active { transform: translateY(1px); }
 .tab-content input[type="file"]:focus-visible::file-selector-button {
   outline: 2px solid var(--file-btn-ring);
@@ -243,4 +314,64 @@ html, body { overflow-x: hidden; }
   opacity: .9;
   cursor: not-allowed;
   box-shadow: none;
+}
+
+/* ===== Leyenda interactiva (añadidos) ===== */
+.legend-bar { overflow-y: auto; overflow-x: hidden; max-height: 170px; margin: 0; padding: 0 8px 8px 8px; border-top: 1px dashed rgba(0,0,0,0.08); }
+.legend-bar ul { list-style: none; margin: 0; padding: 6px 2px; display: flex; flex-direction: column; gap: 6px; max-width: 100%; }
+.legend-bar li {
+  display: grid; grid-template-columns: 16px 1fr; align-items: center;
+  gap: 8px; cursor: pointer; user-select: none;
+  font-size: 13px; line-height: 1.25; padding: 6px 6px; border-radius: 8px;
+  transition: background-color .15s ease, opacity .15s ease;
+}
+.legend-bar li:hover { background: rgba(0,0,0,0.05); }
+:host-context(.dark) .legend-bar li:hover,
+:host-context([data-theme="dark"]) .legend-bar li:hover { background: rgba(255,255,255,0.06); }
+
+.legend-swatch { width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(0,0,0,.15); }
+:host-context(.dark) .legend-swatch,
+:host-context([data-theme="dark"]) .legend-swatch { border-color: rgba(255,255,255,.18); }
+
+.legend-item--hidden { opacity: .45; text-decoration: line-through; }
+.legend-bar li:focus { outline: 2px solid #60a5fa; outline-offset: 2px; }
+
+/* Fila para separar input y botón */
+.file-row{
+  display: flex;
+  align-items: center;
+  gap: 18px;              /* separa el botón del campo */
+  margin: 12px 0 16px;
+  max-width: 100%;
+}
+
+/* Estilo del campo de archivo (incluye el área de texto) */
+.tab-content input[type="file"]{
+  font-size: 14px;
+  color: var(--file-btn-text);
+  background: rgba(255,255,255,0.75);   /* fondo del área de texto */
+  border: 1px solid var(--file-btn-border);
+  border-radius: 14px;
+  padding: 10px 12px;                   /* espacio interno */
+  box-shadow: 0 6px 16px rgba(0,0,0,.06);
+}
+
+/* Botón nativo dentro del input */
+.tab-content input[type="file"]::file-selector-button{
+  margin-right: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--file-btn-border);
+  border-radius: 10px;
+  background: var(--file-btn-bg);
+  color: var(--file-btn-text);
+  cursor: pointer;
+  transition: background-color .2s ease, box-shadow .2s ease, transform .05s ease;
+  box-shadow: 0 6px 16px rgba(0,0,0,.06);
+}
+
+/* Modo oscuro coherente */
+:host-context(.dark) .tab-content input[type="file"],
+:host-context([data-theme="dark"]) .tab-content input[type="file"]{
+  background: rgba(17,24,39,0.65);
+  border-color: #374151;
 }

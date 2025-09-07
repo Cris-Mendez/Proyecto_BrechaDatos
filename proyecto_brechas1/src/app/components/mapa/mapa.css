@@ -9,9 +9,8 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   backdrop-filter: saturate(120%) blur(2px);
   padding: 8px;
-  /* para que el tooltip pueda “confinarse” dentro del contenedor */
-  position: relative;
-  overflow: visible; /* permite que el tooltip se muestre sin recortar bordes internos */
+  position: relative;   /* para confinar tooltip */
+  overflow: visible;    /* permite tooltip fuera del canvas */
 }
 
 /* Área del mapa */
@@ -35,9 +34,9 @@
   border: 3px solid #007ca2;
   border-radius: 10px;
   outline: none;
-  background-color: #ffffff; /* 🎨 fondo blanco */
-  font-weight: bold;         /* 📝 texto en negrilla */
-  color: #1a1a1a;            /* texto oscuro para contraste */
+  background-color: #ffffff;
+  font-weight: bold;
+  color: #1a1a1a;
   transition: border-color 0.3s, box-shadow 0.2s;
 }
 
@@ -50,9 +49,8 @@
 /* Placeholder en negrilla */
 .buscador::placeholder {
   font-weight: bold;
-  color: #555; /* gris medio para diferenciarlo del texto escrito */
+  color: #555;
 }
-
 
 /* Caja de explicación */
 .info-box {
@@ -64,20 +62,55 @@
   color: black;
 }
 
-/* Responsivo */
-@media (max-width: 900px) {
-  .map-chart {
-    height: 520px;
-  }
+/* ===============================
+   📱 MEDIA QUERIES RESPONSIVE
+================================= */
 
-  .map-footer {
-    grid-template-columns: 1fr;
-    
-  }
+/* <= 1200px: compacta un poco alturas y separaciones */
+@media (max-width: 1200px) {
+  .map-chart { height: 560px; }
+  .map-footer { gap: 14px; }
+  .info-box { padding: 12px; }
 }
 
+/* <= 992px: reduce altura del mapa y da más aire al pie */
+@media (max-width: 992px) {
+  .map-chart { height: 540px; }
+  .map-footer { grid-template-columns: 220px 1fr; gap: 14px; }
+  .buscador { padding: 8px 10px; }
+}
+
+/* <= 768px: apila el pie en una columna y ajusta paddings */
+@media (max-width: 768px) {
+  .map-chart { height: 500px; }
+  .map-card { padding: 8px; }
+  .map-footer {
+    grid-template-columns: 1fr;  /* buscador arriba, info abajo */
+    gap: 12px;
+  }
+  .buscador {
+    font-size: 0.95rem;
+    padding: 8px 10px;
+  }
+  .info-box { padding: 12px; }
+}
+
+/* <= 600px: ya lo tenías, lo mantenemos y afinamos texto */
 @media (max-width: 600px) {
-  .map-chart {
-    height: 460px;
+  .map-chart { height: 460px; }
+  .buscador { font-size: 0.95rem; }
+  .info-box { font-size: 0.95rem; }
+}
+
+/* <= 480px: móviles pequeños, mapa más bajo y tipografías compactas */
+@media (max-width: 480px) {
+  .map-chart { height: 400px; }
+  .buscador {
+    font-size: 0.9rem;
+    padding: 7px 10px;
+  }
+  .info-box {
+    padding: 10px 12px;
+    font-size: 0.9rem;
   }
 }
