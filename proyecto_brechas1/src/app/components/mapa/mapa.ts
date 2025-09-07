@@ -188,6 +188,10 @@ export class MapaComponent implements OnInit, AfterViewInit {
         this.chart.hideLoading(); // Oculta el indicador de carga
         this.chart.resize();      // Ajusta a su contenedor
       });
+          // Primer fetch de datos
+    this.observationService.getAll().subscribe((observations: Observation[]) => {
+      this.procesarDatos(observations);
+    });
     });
   }
 
@@ -231,5 +235,43 @@ export class MapaComponent implements OnInit, AfterViewInit {
     this.chart.setOption({
       series: [{ data: this.chartData }],
     });
+      this.procesarDatos(observations);
+  }
+  // Procesar datos y decidir cuándo mostrar/ocultar el loading
+private procesarDatos(observations: Observation[]) {
+  const grouped: { [key: string]: Observation } = {};
+  observations.forEach((obs) => {
+    if (!grouped[obs.countryName] || obs.timePeriod > grouped[obs.countryName].timePeriod) {
+      grouped[obs.countryName] = obs;
+    }
+  });
+
+  this.chartData = Object.values(grouped).map((obs) => ({
+    name: obs.countryName,
+    value: obs.obsValue,
+    indicatorName: obs.indicatorName,
+    timePeriod: obs.timePeriod,
+    unitMeasure: obs.unitMeasure,
+    sexLabel: obs.sexLabel,
+    ageLabel: obs.ageLabel,
+    urbanisationLabel: obs.urbanisationLabel,
+  }));
+
+  if (this.chartData.length === 0) {
+    // ⚡ si sigue vacío → mostrar loading "Esperando datos..."
+    this.chart.showLoading('default', {
+      text: 'Esperando carga de datos... Por favor Espere',
+      color: '#005f73',
+    });
+  } else {
+    // ⚡ si ya llegaron datos → actualizar y ocultar loading
+    this.chart.setOption({
+      series: [{ data: this.chartData }],
+    });
+    this.chart.hideLoading();
+    this.chart.resize();
   }
 }
+
+}
+
