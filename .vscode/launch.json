@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-BrechasdigitalesApplication<brechasdigitales>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.dss.brechasdigitales.BrechasdigitalesApplication",
+            "projectName": "brechasdigitales",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
