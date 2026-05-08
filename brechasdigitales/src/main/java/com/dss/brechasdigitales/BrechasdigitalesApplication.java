@@ -1,4 +1,5 @@
 package com.dss.brechasdigitales;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.boot.SpringApplication;
@@ -10,10 +11,10 @@ public class BrechasdigitalesApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BrechasdigitalesApplication.class, args);
 	}
-		   @Bean
-		       public RestTemplate restTemplate() {
-			           return new RestTemplate();
-					       }
 
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
 
 }

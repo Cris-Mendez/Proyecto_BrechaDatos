@@ -1,4 +1,4 @@
-package com.dss.brechasdigitales.controller;   // Paquete donde vive este controlador REST
+package com.dss.brechasdigitales.controller; // Paquete donde vive este controlador REST
 
 // ======================= IMPORTS =======================
 // Utilidades de colecciones para devolver resultados
@@ -19,19 +19,19 @@ import org.springframework.web.multipart.MultipartFile;
 // Servicio de aplicación que procesa el CSV
 import com.dss.brechasdigitales.service.SimplifiedCsvService;
 
-@RestController                                     // Marca la clase como controlador REST (retorna JSON/HTTP)
-@RequestMapping("/api/import")                      // Prefijo común para todos los endpoints de esta clase
-@CrossOrigin(origins = "http://localhost:4200")     // Habilita CORS para el front de Angular en desarrollo
+@RestController // Marca la clase como controlador REST (retorna JSON/HTTP)
+@RequestMapping("/api/import") // Prefijo común para todos los endpoints de esta clase
+@CrossOrigin(origins = "http://localhost:4200") // Habilita CORS para el front de Angular en desarrollo
 public class DataImportController {
 
-     @Autowired
-    private SimplifiedCsvService csvService;        // Servicio inyectado que contiene la lógica de parseo del CSV
+    @Autowired
+    private SimplifiedCsvService csvService; // Servicio inyectado que contiene la lógica de parseo del CSV
 
     // Constructor explícito (permite inyección por constructor si se desea)
-    public DataImportController (SimplifiedCsvService csvService) {
+    public DataImportController(SimplifiedCsvService csvService) {
         this.csvService = csvService;
     }
-    
+
     // ================================================================
     // Endpoint: POST /api/import/upload
     // - Recibe un archivo con el parámetro "file" (multipart/form-data).
@@ -46,11 +46,12 @@ public class DataImportController {
             return ResponseEntity.badRequest().body(List.of("⚠ El archivo está vacío"));
         }
 
-        // Procesar el archivo y obtener los resultados (mensajes, líneas importadas, etc.)
+        // Procesar el archivo y obtener los resultados (mensajes, líneas importadas,
+        // etc.)
         List<String> results = csvService.processCsvFile(file);
 
         // Responder 200 OK con la lista de resultados
         return ResponseEntity.ok(results);
     }
-    
+
 }

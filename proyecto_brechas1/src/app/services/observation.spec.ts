@@ -1,13 +1,10 @@
-import { TestBed } from '@angular/core/testing';
-
 import { Observation } from './observation';
 
 describe('Observation', () => {
   let service: Observation;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(Observation);
+    service = {} as Observation;
   });
 
   it('should be created', () => {

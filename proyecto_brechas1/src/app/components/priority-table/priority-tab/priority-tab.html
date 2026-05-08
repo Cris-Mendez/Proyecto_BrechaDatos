@@ -1,8 +1,6 @@
 <div class="prioritization-container" [class.dark-mode]="isDarkMode">
   <!-- Botón para salir o volver (arriba a la derecha) -->
-  <button class="exit-button"
-          (click)="goBack()"
-          aria-label="Volver a cargar CSV">
+  <button class="exit-button" (click)="goBack()" aria-label="Volver a cargar CSV">
     ← Salir
   </button>
 
@@ -54,28 +52,29 @@
     <!-- Filtro: año inicial -->
     <div class="filter-group">
       <label for="minYear">Año inicial:</label>
-      <input type="number" id="minYear" [(ngModel)]="minYear"
-             (ngModelChange)="loadPriorityRegions()" min="2000" max="2025">
+      <input type="number" id="minYear" [(ngModel)]="minYear" (ngModelChange)="loadPriorityRegions()" min="2000"
+        max="2025">
     </div>
 
     <!-- Filtro: año final -->
     <div class="filter-group">
       <label for="maxYear">Año final:</label>
-      <input type="number" id="maxYear" [(ngModel)]="maxYear"
-             (ngModelChange)="loadPriorityRegions()" min="2000" max="2025">
+      <input type="number" id="maxYear" [(ngModel)]="maxYear" (ngModelChange)="loadPriorityRegions()" min="2000"
+        max="2025">
     </div>
 
     <!-- Botón para descargar los resultados como CSV -->
-    <button (click)="downloadCSV()"
-            [disabled]="isLoading || priorityRegions.length === 0 || isExporting"
-            title="Descargar TODOS los datos de la tabla como CSV">
+    <button (click)="downloadCSV()" [disabled]="isLoading || priorityRegions.length === 0 || isExporting"
+      title="Descargar TODOS los datos de la tabla como CSV">
       {{ isExporting ? 'Descargando…' : 'Descargar CSV' }}
     </button>
   </div>
 
   <!-- Mensajes dinámicos -->
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div> <!-- Error -->
-  <div *ngIf="isLoading" class="loading"><p>Cargando datos de priorización...</p></div> <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Cargando datos de priorización...</p>
+  </div> <!-- Loading -->
   <div *ngIf="!isLoading && priorityRegions.length === 0" class="no-data">
     <p>No se encontraron datos para los criterios seleccionados.</p>
   </div>
@@ -99,8 +98,9 @@
       </thead>
       <tbody>
         <!-- Itera sobre las regiones; muestra todas si isExpanded o solo visibleCount -->
-        <tr *ngFor="let region of (isExpanded ? priorityRegions : (priorityRegions | slice:0:visibleCount)); let i = index"
-            [class]="getPriorityClass(region.priorityScore)">
+        <tr
+          *ngFor="let region of (isExpanded ? priorityRegions : (priorityRegions | slice:0:visibleCount)); let i = index"
+          [class]="getPriorityClass(region.priorityScore)">
           <td>{{ i + 1 }}</td> <!-- Posición en ranking -->
           <td>{{ region.countryName }} ({{ region.countryCode }})</td> <!-- Nombre y código de país -->
           <td>{{ region.currentValue | number:'1.2-2' }}</td> <!-- Valor actual -->
@@ -119,9 +119,7 @@
 
     <!-- Botón para ver más/menos filas -->
     <div class="show-more-container" *ngIf="priorityRegions.length > visibleCount">
-      <button class="show-more-btn"
-              (click)="toggleExpand()"
-              [attr.aria-expanded]="isExpanded">
+      <button class="show-more-btn" (click)="toggleExpand()" [attr.aria-expanded]="isExpanded">
         {{ isExpanded ? 'Ver menos' : 'Ver más (' + (priorityRegions.length - visibleCount) + ' más)' }}
       </button>
       <small class="hint" *ngIf="!isExpanded">Mostrando {{ visibleCount }} de {{ priorityRegions.length }} filas</small>

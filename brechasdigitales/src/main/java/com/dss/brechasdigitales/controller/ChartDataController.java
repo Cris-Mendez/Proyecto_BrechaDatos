@@ -20,29 +20,31 @@ import com.dss.brechasdigitales.entity.SimplifiedObservation;
 import com.dss.brechasdigitales.service.DataService;
 
 /**
- * Controlador REST que expone endpoints para alimentar las gráficas del frontend.
- * Permite consultar series de tiempo, comparativos por país, indicadores disponibles,
+ * Controlador REST que expone endpoints para alimentar las gráficas del
+ * frontend.
+ * Permite consultar series de tiempo, comparativos por país, indicadores
+ * disponibles,
  * años disponibles y también obtener todas las observaciones simplificadas.
  */
-@RestController                           // Indica que esta clase maneja peticiones REST y devuelve JSON
-@RequestMapping("/api/chart-data")        // Prefijo común para todos los endpoints de este controlador
-@CrossOrigin(origins = "*")               // Habilita CORS (útil para que Angular en desarrollo pueda consumir la API)
+@RestController // Indica que esta clase maneja peticiones REST y devuelve JSON
+@RequestMapping("/api/chart-data") // Prefijo común para todos los endpoints de este controlador
+@CrossOrigin(origins = "*") // Habilita CORS (útil para que Angular en desarrollo pueda consumir la API)
 public class ChartDataController {
 
     @Autowired
-    private DataService dataService;      // Servicio de acceso a datos (repositorios/consultas y lógica)
+    private DataService dataService; // Servicio de acceso a datos (repositorios/consultas y lógica)
 
     /**
      * GET /api/chart-data/time-series
      * Devuelve la serie de tiempo para un país y un indicador concretos.
      *
-     * @param countryCode  código del país (por ejemplo "COL")
+     * @param countryCode   código del país (por ejemplo "COL")
      * @param indicatorName nombre del indicador a consultar
      * @return lista de observaciones simplificadas ordenadas por tiempo
      */
     @GetMapping("/time-series")
     public ResponseEntity<List<SimplifiedObservation>> getTimeSeriesData(
-            @RequestParam String countryCode,   // Parámetro de query obligatorio
+            @RequestParam String countryCode, // Parámetro de query obligatorio
             @RequestParam String indicatorName) // Parámetro de query obligatorio
     {
         // Delegamos en el servicio la obtención de los datos
@@ -62,7 +64,7 @@ public class ChartDataController {
      */
     @GetMapping("/country-comparison")
     public ResponseEntity<List<SimplifiedObservation>> getCountryComparison(
-            @RequestParam Integer year,         // Año a filtrar
+            @RequestParam Integer year, // Año a filtrar
             @RequestParam String indicatorName) // Indicador a filtrar
     {
         List<SimplifiedObservation> data = dataService.getCountryComparison(year, indicatorName);
@@ -82,7 +84,8 @@ public class ChartDataController {
 
     /**
      * GET /api/chart-data/years
-     * Devuelve los años disponibles para un indicador dado (útil para poblar combos/filtros).
+     * Devuelve los años disponibles para un indicador dado (útil para poblar
+     * combos/filtros).
      *
      * @param indicatorName indicador para el que se consultan los años
      * @return lista de años disponibles (enteros)

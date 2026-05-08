@@ -13,7 +13,7 @@ import { ThemeService } from './services/theme';  // ✅ tu servicio, no ng2-cha
   styleUrls: ['./app.css']
 })
 export class AppComponent {
-  constructor(private themeService: ThemeService) {}
+  constructor(private themeService: ThemeService) { }
 
   toggleTheme() {
     this.themeService.toggleTheme();

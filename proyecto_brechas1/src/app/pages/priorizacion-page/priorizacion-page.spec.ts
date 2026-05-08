@@ -10,7 +10,7 @@ describe('PriorizacionPage', () => {
     await TestBed.configureTestingModule({
       imports: [PriorizacionPage]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(PriorizacionPage);
     component = fixture.componentInstance;

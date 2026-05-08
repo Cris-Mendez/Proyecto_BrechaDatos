@@ -40,7 +40,7 @@ export class PriorityTabComponent {
     private prioritizationService: PrioritizationService, // Servicio para obtener datos
     private renderer: Renderer2,                          // Renderer2 para manipular DOM de forma segura
     private router: Router                                // Router para navegación
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Cargar indicadores y edades disponibles

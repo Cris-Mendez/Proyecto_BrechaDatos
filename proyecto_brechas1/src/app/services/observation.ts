@@ -21,7 +21,7 @@ export interface Observation {
 export class ObservationService {
   private apiUrl = 'http://localhost:8080/api/observations';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAll(): Observable<Observation[]> {
     return this.http.get<Observation[]>(this.apiUrl);

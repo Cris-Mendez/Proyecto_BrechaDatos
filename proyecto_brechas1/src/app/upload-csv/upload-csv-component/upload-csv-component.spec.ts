@@ -10,7 +10,7 @@ describe('UploadCsvComponent', () => {
     await TestBed.configureTestingModule({
       imports: [UploadCsvComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(UploadCsvComponent);
     component = fixture.componentInstance;

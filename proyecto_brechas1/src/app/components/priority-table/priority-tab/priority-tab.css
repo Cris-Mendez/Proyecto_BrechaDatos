@@ -1,8 +1,8 @@
 body {
   background: linear-gradient(135deg, #f2e0f6 25%, transparent 25%) -20px 0/40px 40px,
-              linear-gradient(225deg, #f2e0f6 25%, transparent 25%) -20px 0/40px 40px,
-              linear-gradient(315deg, #f2e0f6 25%, transparent 25%) 0px 0/40px 40px,
-              linear-gradient(45deg, #f2e0f6 25%, #ffffff 25%) 0px 0/40px 40px;
+    linear-gradient(225deg, #f2e0f6 25%, transparent 25%) -20px 0/40px 40px,
+    linear-gradient(315deg, #f2e0f6 25%, transparent 25%) 0px 0/40px 40px,
+    linear-gradient(45deg, #f2e0f6 25%, #ffffff 25%) 0px 0/40px 40px;
   background-color: #ffffff;
   transition: background 0.5s ease;
 }
@@ -10,9 +10,9 @@ body {
 /* Fondo oscuro */
 body.dark-mode {
   background: linear-gradient(135deg, #1c1c28 25%, transparent 25%) -20px 0/40px 40px,
-              linear-gradient(225deg, #1c1c28 25%, transparent 25%) -20px 0/40px 40px,
-              linear-gradient(315deg, #1c1c28 25%, transparent 25%) 0px 0/40px 40px,
-              linear-gradient(45deg, #1c1c28 25%, #2b2b40 25%) 0px 0/40px 40px;
+    linear-gradient(225deg, #1c1c28 25%, transparent 25%) -20px 0/40px 40px,
+    linear-gradient(315deg, #1c1c28 25%, transparent 25%) 0px 0/40px 40px,
+    linear-gradient(45deg, #1c1c28 25%, #2b2b40 25%) 0px 0/40px 40px;
   background-color: #121212;
 }
 
@@ -27,7 +27,8 @@ body.dark-mode {
   border: 1px solid rgba(255, 255, 255, 0.403);
   max-width: 1200px;
   margin: 30px auto;
-  position: relative; /* para posicionar el botón de salida */
+  position: relative;
+  /* para posicionar el botón de salida */
   transition: all 0.4s ease;
 }
 
@@ -39,7 +40,9 @@ body.dark-mode .prioritization-container {
 }
 
 /* Quitamos el borde degradado */
-.prioritization-container::before { display: none; }
+.prioritization-container::before {
+  display: none;
+}
 
 .prioritization-container h2 {
   text-align: center;
@@ -62,7 +65,8 @@ body.dark-mode .prioritization-container h2 {
   padding: 10px 16px;
   border-radius: 8px;
   font-weight: 700;
-  background-color: #515daa;   /* mismo color base */
+  background-color: #515daa;
+  /* mismo color base */
   color: #fff;
   box-shadow: 0 4px 8px rgba(81, 93, 170, 0.3);
   border: none;
@@ -71,14 +75,15 @@ body.dark-mode .prioritization-container h2 {
 }
 
 .exit-button:hover {
-  background-color: #1e2a4e;   /* mismo hover */
+  background-color: #1e2a4e;
+  /* mismo hover */
   transform: scale(1.05);
 }
 
 /* ===== Tarjetas KPI ===== */
 .kpi-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 15px;
   margin-bottom: 25px;
 }
@@ -92,13 +97,25 @@ body.dark-mode .prioritization-container h2 {
   transition: transform 0.3s;
 }
 
-.kpi-card:hover { transform: translateY(-5px); }
+.kpi-card:hover {
+  transform: translateY(-5px);
+}
 
-.kpi-card h4 { font-size: 16px; color: #1e2a4e; }
+.kpi-card h4 {
+  font-size: 16px;
+  color: #1e2a4e;
+}
 
-.kpi-card p { font-size: 20px; font-weight: bold; color: #515daa; }
+.kpi-card p {
+  font-size: 20px;
+  font-weight: bold;
+  color: #515daa;
+}
 
-body.dark-mode .kpi-card { background: #2b2b40; color: #f4f4f9; }
+body.dark-mode .kpi-card {
+  background: #2b2b40;
+  color: #f4f4f9;
+}
 
 /* ===== Filtros ===== */
 .filters {
@@ -122,7 +139,9 @@ body.dark-mode .kpi-card { background: #2b2b40; color: #f4f4f9; }
   color: #515daa;
 }
 
-body.dark-mode .filter-group label { color: #9699fb; }
+body.dark-mode .filter-group label {
+  color: #9699fb;
+}
 
 .filter-group input,
 .filter-group select {
@@ -156,9 +175,16 @@ button {
   box-shadow: 0 4px 8px rgba(81, 93, 170, 0.3);
 }
 
-button:hover { background-color: #1e2a4e; transform: scale(1.05); }
+button:hover {
+  background-color: #1e2a4e;
+  transform: scale(1.05);
+}
 
-button:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none; }
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
 
 /* ===== Mensajes ===== */
 .error-message {
@@ -170,8 +196,19 @@ button:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none;
   margin-bottom: 10px;
 }
 
-.loading { color: #515daa; font-weight: bold; text-align: center; margin: 20px 0; }
-.no-data { color: #ff9f1c; font-weight: bold; text-align: center; margin: 20px 0; }
+.loading {
+  color: #515daa;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.no-data {
+  color: #ff9f1c;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0;
+}
 
 /* ===== Tabla ===== */
 .priority-table {
@@ -184,34 +221,51 @@ button:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none;
   margin-top: 15px;
 }
 
-.priority-table thead { background-color: rgba(30, 42, 78, 0.9); color: white; }
+.priority-table thead {
+  background-color: rgba(30, 42, 78, 0.9);
+  color: white;
+}
 
-body.dark-mode .priority-table { background-color: #1c1c28; }
-body.dark-mode .priority-table thead { background-color: rgba(81, 93, 170, 0.9); }
+body.dark-mode .priority-table {
+  background-color: #1c1c28;
+}
 
-.priority-table th, .priority-table td {
+body.dark-mode .priority-table thead {
+  background-color: rgba(81, 93, 170, 0.9);
+}
+
+.priority-table th,
+.priority-table td {
   text-align: center;
   padding: 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: #000000;
 }
 
 body.dark-mode .priority-table td,
 body.dark-mode .priority-table th {
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: #f4f4f9;
 }
 
 /* Filas pares */
-.priority-table tbody tr:nth-child(even) { background-color: rgba(242, 224, 246, 0.3); }
-body.dark-mode .priority-table tbody tr:nth-child(even) { background-color: rgba(81, 93, 170, 0.25); }
+.priority-table tbody tr:nth-child(even) {
+  background-color: rgba(242, 224, 246, 0.3);
+}
+
+body.dark-mode .priority-table tbody tr:nth-child(even) {
+  background-color: rgba(81, 93, 170, 0.25);
+}
 
 /* Hover */
 .priority-table tbody tr:hover {
   background-color: rgba(150, 153, 251, 0.3);
   transition: 0.3s;
 }
-body.dark-mode .priority-table tbody tr:hover { background-color: rgba(150, 153, 251, 0.35); }
+
+body.dark-mode .priority-table tbody tr:hover {
+  background-color: rgba(150, 153, 251, 0.35);
+}
 
 /* ===== Score bar ===== */
 .score-bar {
@@ -225,7 +279,7 @@ body.dark-mode .priority-table tbody tr:hover { background-color: rgba(150, 153,
 }
 
 .score-fill {
-  background: linear-gradient(90deg, rgba(81,93,170,0.9), rgba(150,153,251,0.9));
+  background: linear-gradient(90deg, rgba(81, 93, 170, 0.9), rgba(150, 153, 251, 0.9));
   height: 100%;
   transition: width 0.6s ease-in-out;
 }
@@ -239,7 +293,10 @@ body.dark-mode .priority-table tbody tr:hover { background-color: rgba(150, 153,
   font-weight: bold;
   color: #140f07;
 }
-body.dark-mode .score-bar span { color: #f4f4f9; }
+
+body.dark-mode .score-bar span {
+  color: #f4f4f9;
+}
 
 /* Controles ver más/menos */
 .show-more-container {
@@ -249,8 +306,15 @@ body.dark-mode .score-bar span { color: #f4f4f9; }
   justify-content: center;
   margin-top: 12px;
 }
-.show-more-btn { min-width: 170px; }
-.hint { opacity: 0.8; font-size: 12px; }
+
+.show-more-btn {
+  min-width: 170px;
+}
+
+.hint {
+  opacity: 0.8;
+  font-size: 12px;
+}
 
 /* ===============================
    📱 MEDIA QUERIES RESPONSIVE
@@ -258,10 +322,21 @@ body.dark-mode .score-bar span { color: #f4f4f9; }
 
 /* <= 1200px: compactar un poco tipografías y padding */
 @media (max-width: 1200px) {
-  .prioritization-container { padding: 22px; }
-  .prioritization-container h2 { font-size: 26px; }
-  .kpi-card p { font-size: 18px; }
-  .filters { gap: 12px; }
+  .prioritization-container {
+    padding: 22px;
+  }
+
+  .prioritization-container h2 {
+    font-size: 26px;
+  }
+
+  .kpi-card p {
+    font-size: 18px;
+  }
+
+  .filters {
+    gap: 12px;
+  }
 }
 
 /* <= 992px: dos columnas para KPIs más cómodas y filtros más fluidos */
@@ -273,6 +348,7 @@ body.dark-mode .score-bar span { color: #f4f4f9; }
       linear-gradient(315deg, #f2e0f6 25%, transparent 25%) 0px 0/32px 32px,
       linear-gradient(45deg, #f2e0f6 25%, #ffffff 25%) 0px 0/32px 32px;
   }
+
   body.dark-mode {
     background:
       linear-gradient(135deg, #1c1c28 25%, transparent 25%) -16px 0/32px 32px,
@@ -281,21 +357,49 @@ body.dark-mode .score-bar span { color: #f4f4f9; }
       linear-gradient(45deg, #1c1c28 25%, #2b2b40 25%) 0px 0/32px 32px;
   }
 
-  .prioritization-container { padding: 20px; margin: 24px auto; }
-  .prioritization-container h2 { font-size: 24px; }
+  .prioritization-container {
+    padding: 20px;
+    margin: 24px auto;
+  }
+
+  .prioritization-container h2 {
+    font-size: 24px;
+  }
 
   .kpi-cards {
-    grid-template-columns: repeat(2, minmax(0,1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
-  .kpi-card h4 { font-size: 15px; }
-  .kpi-card p { font-size: 18px; }
 
-  .filters { gap: 12px; }
-  .filter-group { min-width: 180px; }
-  .priority-table th, .priority-table td { padding: 10px; }
-  .score-bar { width: 110px; height: 16px; }
-  .score-bar span { font-size: 11px; }
+  .kpi-card h4 {
+    font-size: 15px;
+  }
+
+  .kpi-card p {
+    font-size: 18px;
+  }
+
+  .filters {
+    gap: 12px;
+  }
+
+  .filter-group {
+    min-width: 180px;
+  }
+
+  .priority-table th,
+  .priority-table td {
+    padding: 10px;
+  }
+
+  .score-bar {
+    width: 110px;
+    height: 16px;
+  }
+
+  .score-bar span {
+    font-size: 11px;
+  }
 }
 
 /* <= 768px: apilar filtros en una columna, botones full-width, tabla más compacta */
@@ -307,6 +411,7 @@ body.dark-mode .score-bar span { color: #f4f4f9; }
       linear-gradient(315deg, #f2e0f6 25%, transparent 25%) 0px 0/24px 24px,
       linear-gradient(45deg, #f2e0f6 25%, #ffffff 25%) 0px 0/24px 24px;
   }
+
   body.dark-mode {
     background:
       linear-gradient(135deg, #1c1c28 25%, transparent 25%) -12px 0/24px 24px,
@@ -315,29 +420,62 @@ body.dark-mode .score-bar span { color: #f4f4f9; }
       linear-gradient(45deg, #1c1c28 25%, #2b2b40 25%) 0px 0/24px 24px;
   }
 
-  .prioritization-container { padding: 18px; margin: 20px 12px; border-radius: 16px; }
-  .prioritization-container h2 { font-size: 22px; margin-bottom: 20px; }
+  .prioritization-container {
+    padding: 18px;
+    margin: 20px 12px;
+    border-radius: 16px;
+  }
+
+  .prioritization-container h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
 
   .exit-button {
-    position: static; /* baja el botón para evitar solapes */
+    position: static;
+    /* baja el botón para evitar solapes */
     display: inline-block;
     margin-bottom: 12px;
   }
 
-  .kpi-cards { grid-template-columns: 1fr 1fr; }
+  .kpi-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .filters {
     flex-direction: column;
     gap: 10px;
   }
-  .filter-group { min-width: 100%; }
+
+  .filter-group {
+    min-width: 100%;
+  }
+
   .filter-group input,
-  .filter-group select { font-size: 13.5px; padding: 9px 10px; }
+  .filter-group select {
+    font-size: 13.5px;
+    padding: 9px 10px;
+  }
 
-  button { width: 100%; padding: 11px 16px; }
+  button {
+    width: 100%;
+    padding: 11px 16px;
+  }
 
-  .priority-table th, .priority-table td { padding: 9px 8px; font-size: 14px; }
-  .score-bar { width: 100px; height: 15px; }
-  .score-bar span { font-size: 10.5px; }
+  .priority-table th,
+  .priority-table td {
+    padding: 9px 8px;
+    font-size: 14px;
+  }
+
+  .score-bar {
+    width: 100px;
+    height: 15px;
+  }
+
+  .score-bar span {
+    font-size: 10.5px;
+  }
 }
 
 /* <= 576px: móviles — una columna para todo, tipografías más pequeñas y scroll en tabla si hace falta */
@@ -349,6 +487,7 @@ body.dark-mode .score-bar span { color: #f4f4f9; }
       linear-gradient(315deg, #f2e0f6 25%, transparent 25%) 0px 0/16px 16px,
       linear-gradient(45deg, #f2e0f6 25%, #ffffff 25%) 0px 0/16px 16px;
   }
+
   body.dark-mode {
     background:
       linear-gradient(135deg, #1c1c28 25%, transparent 25%) -8px 0/16px 16px,
@@ -357,36 +496,97 @@ body.dark-mode .score-bar span { color: #f4f4f9; }
       linear-gradient(45deg, #1c1c28 25%, #2b2b40 25%) 0px 0/16px 16px;
   }
 
-  .prioritization-container { padding: 14px; margin: 16px 10px; border-radius: 14px; }
-  .prioritization-container h2 { font-size: 20px; }
+  .prioritization-container {
+    padding: 14px;
+    margin: 16px 10px;
+    border-radius: 14px;
+  }
 
-  .kpi-cards { grid-template-columns: 1fr; gap: 10px; }
-  .kpi-card { padding: 12px; }
-  .kpi-card h4 { font-size: 14px; }
-  .kpi-card p { font-size: 18px; }
+  .prioritization-container h2 {
+    font-size: 20px;
+  }
 
-  .filters { gap: 8px; }
-  .filter-group label { font-size: 13px; margin-bottom: 4px; }
+  .kpi-cards {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .kpi-card {
+    padding: 12px;
+  }
+
+  .kpi-card h4 {
+    font-size: 14px;
+  }
+
+  .kpi-card p {
+    font-size: 18px;
+  }
+
+  .filters {
+    gap: 8px;
+  }
+
+  .filter-group label {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
   .filter-group input,
-  .filter-group select { font-size: 13px; padding: 8px 10px; }
+  .filter-group select {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
 
-  button { padding: 10px 14px; font-size: 14px; }
+  button {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
 
   /* Tabla con contenedor scroll horizontal si las columnas no caben */
-  .priority-table { font-size: 13.5px; }
-  .priority-table th, .priority-table td { padding: 8px 6px; }
-  .score-bar { width: 90px; height: 14px; }
-  .score-bar span { font-size: 10px; }
+  .priority-table {
+    font-size: 13.5px;
+  }
+
+  .priority-table th,
+  .priority-table td {
+    padding: 8px 6px;
+  }
+
+  .score-bar {
+    width: 90px;
+    height: 14px;
+  }
+
+  .score-bar span {
+    font-size: 10px;
+  }
 
   /* Ayudas de lectura */
-  .hint { font-size: 11px; }
+  .hint {
+    font-size: 11px;
+  }
 }
 
 /* <= 400px: micro-ajustes finales */
 @media (max-width: 400px) {
-  .prioritization-container { padding: 12px; }
-  .prioritization-container h2 { font-size: 18px; }
-  .kpi-card p { font-size: 16px; }
-  .priority-table { font-size: 13px; }
-  .score-bar { width: 82px; }
+  .prioritization-container {
+    padding: 12px;
+  }
+
+  .prioritization-container h2 {
+    font-size: 18px;
+  }
+
+  .kpi-card p {
+    font-size: 16px;
+  }
+
+  .priority-table {
+    font-size: 13px;
+  }
+
+  .score-bar {
+    width: 82px;
+  }
 }

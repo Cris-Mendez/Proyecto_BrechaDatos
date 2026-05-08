@@ -41,25 +41,32 @@ public class WorldBankController {
     }
 
     // Endpoint de ejemplo: Población total de Colombia (2000–2020)
-@GetMapping("/population/colombia")
-public ResponseEntity<String> getColombiaPopulation() {
-    String url = WORLD_BANK_API_BASE_URL +
-            "/data360/data?DATABASE_ID=WB_WDI&INDICATOR=WB_WDI_SP_POP_TOTL&REF_AREA=COL&timePeriodFrom=2000&timePeriodTo=2024";
-    try {
-        System.out.println("Llamando a URL: " + url);
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+    @GetMapping("/population/colombia")
+    public ResponseEntity<String> getColombiaPopulation() {
+        String url = WORLD_BANK_API_BASE_URL +
+                "/data360/data?DATABASE_ID=WB_WDI&INDICATOR=WB_WDI_SP_POP_TOTL&REF_AREA=COL&timePeriodFrom=2000&timePeriodTo=2024";
+        try {
+            System.out.println("Llamando a URL: " + url);
+            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-        // 🔹 Reemplazar todos los "_T" en la respuesta JSON por "Valor total"
-        String responseBody = response.getBody().replace("\"_T\"", "\"Valor total\"");
+            String responseBody = response.getBody();
+            if (responseBody == null) {
+                return ResponseEntity.status(500)
+                        .body("Error al obtener datos de población de Colombia: la respuesta está vacía.");
+            }
 
-        System.out.println("Respuesta población Colombia (transformada): " + responseBody);
+            // 🔹 Reemplazar todos los "_T" en la respuesta JSON por "Valor total"
+            responseBody = responseBody.replace("\"_T\"", "\"Valor total\"");
 
-        return ResponseEntity.ok(responseBody);
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(500)
-                .body("Error al obtener datos de población de Colombia: " + e.getMessage());
+            System.out.println("Respuesta población Colombia (transformada): " + responseBody);
+
+            return ResponseEntity.ok(responseBody);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .body("Error al obtener datos de población de Colombia: " + e.getMessage());
+        }
     }
-}
 
 }

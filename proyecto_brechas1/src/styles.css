@@ -6,11 +6,16 @@
   --text-color: #000000;
 
   /* Paleta de colores */
-  --color1: #e0e0e0; /* gris suave */
-  --color2: #007bff; /* azul principal */
-  --color3: #3399ff; /* azul claro */
-  --color4: #ff4d4d; /* rojo */
-  --color5: #28a745; /* verde */
+  --color1: #e0e0e0;
+  /* gris suave */
+  --color2: #007bff;
+  /* azul principal */
+  --color3: #3399ff;
+  /* azul claro */
+  --color4: #ff4d4d;
+  /* rojo */
+  --color5: #28a745;
+  /* verde */
 }
 
 .dark-theme {
@@ -36,7 +41,13 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-h1, h2, h3, p, a, label, pre {
+h1,
+h2,
+h3,
+p,
+a,
+label,
+pre {
   color: var(--text-color);
   transition: color 0.3s;
 }
@@ -108,7 +119,9 @@ nav a:hover {
 /* ===========================
    📝 Formularios
 =========================== */
-input, select, textarea {
+input,
+select,
+textarea {
   color: var(--text-color);
   background-color: var(--background-color);
   border: 1px solid var(--color1);
@@ -209,12 +222,12 @@ nav button {
 nav button:hover {
   background-color: #6b95e2;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 nav button:active {
   transform: scale(0.96);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 footer {
@@ -226,7 +239,8 @@ footer {
 
 footer hr {
   border: 0;
-  border-top: 3px solid #000000; /* Negro y más grueso */
+  border-top: 3px solid #000000;
+  /* Negro y más grueso */
   margin-bottom: 10px;
 }
 
@@ -296,7 +310,9 @@ footer hr {
     padding: 10px 8px;
   }
 
-  input, select, textarea {
+  input,
+  select,
+  textarea {
     width: 100%;
     padding: 10px;
     font-size: 14px;
@@ -327,9 +343,17 @@ footer hr {
     font-size: 15px;
   }
 
-  h1 { font-size: 22px; }
-  h2 { font-size: 20px; }
-  h3 { font-size: 18px; }
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
 
   nav {
     padding: 8px;

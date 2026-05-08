@@ -1,4 +1,4 @@
-<div class="container"> 
+<div class="container">
   <div class="layout">
     <!-- Columna IZQUIERDA: contiene el mapa y el comparativo de datos -->
     <div class="col-left">
@@ -28,12 +28,7 @@
         <!-- Gráfico comparativo en barras -->
         <div class="chart-container compare-canvas">
           <div *ngIf="isBrowser">
-            <canvas
-              baseChart
-              #barChart="base-chart"
-              [data]="barChartData"
-              [options]="barChartOptions"
-              [type]="'bar'">
+            <canvas baseChart #barChart="base-chart" [data]="barChartData" [options]="barChartOptions" [type]="'bar'">
             </canvas>
           </div>
         </div>
@@ -46,11 +41,7 @@
         <div class="chart-container">
           <!-- Gráfico principal en líneas -->
           <div *ngIf="isBrowser">
-            <canvas
-              baseChart
-              #lineChart="base-chart"
-              [data]="lineChartData"
-              [options]="lineChartOptions"
+            <canvas baseChart #lineChart="base-chart" [data]="lineChartData" [options]="lineChartOptions"
               [type]="'line'">
             </canvas>
           </div>
@@ -61,13 +52,9 @@
           <ul>
             <!-- Itera sobre los datasets y crea un ítem de leyenda -->
             <li *ngFor="let ds of lineChartData.datasets; let i = index"
-                [class.legend-item--hidden]="ds.hidden === true"
-                (click)="onLegendClickMouse(i, $event)"
-                (keydown.enter)="onLegendClickKey(i, $event)"
-                (keydown.space)="onLegendClickKey(i, $event)"
-                (mouseenter)="onLegendHoverEnter(i)"
-                (mouseleave)="onLegendHoverLeave()"
-                tabindex="0">
+              [class.legend-item--hidden]="ds.hidden === true" (click)="onLegendClickMouse(i, $event)"
+              (keydown.enter)="onLegendClickKey(i, $event)" (keydown.space)="onLegendClickKey(i, $event)"
+              (mouseenter)="onLegendHoverEnter(i)" (mouseleave)="onLegendHoverLeave()" tabindex="0">
               <!-- Cuadro de color de la serie -->
               <span class="legend-swatch" [style.background]="getDatasetColor(i)"></span>
               <span>{{ ds.label }}</span>
@@ -79,24 +66,26 @@
       <!-- Controles: pestañas para CSV o API -->
       <div class="controls">
         <div class="tabs">
-          <button class="tab-btn" [class.active]="activeTab === 'upload'" (click)="setActiveTab('upload')">Subir CSV</button>
-          <button class="tab-btn" [class.active]="activeTab === 'api'" (click)="setActiveTab('api')">Conectar API</button>
+          <button class="tab-btn" [class.active]="activeTab === 'upload'" (click)="setActiveTab('upload')">Subir
+            CSV</button>
+          <button class="tab-btn" [class.active]="activeTab === 'api'" (click)="setActiveTab('api')">Conectar
+            API</button>
         </div>
 
         <!-- Botón de navegación a priorización (cuando hay CSV cargado) -->
         <div class="navigation-buttons" *ngIf="activeTab === 'upload' && csvLoaded">
-         <button class="btn btn-primary" (click)="goToPriorizacion()">Ir a Prioridad</button>
+          <button class="btn btn-primary" (click)="goToPriorizacion()">Ir a Prioridad</button>
         </div>
 
-       <!-- 📂 Pestaña: Subir CSV -->
+        <!-- 📂 Pestaña: Subir CSV -->
         <div *ngIf="activeTab === 'upload'" class="tab-content">
-        <h2>Subir Archivo CSV</h2>
+          <h2>Subir Archivo CSV</h2>
 
           <!-- Fila con input de archivo y botón de subir -->
           <div class="file-row">
             <input type="file" (change)="onFileSelected($event)" accept=".csv" />
             <button class="btn btn-success" (click)="onUpload()" [disabled]="!selectedFile || progress > 0">
-             Subir CSV
+              Subir CSV
             </button>
           </div>
 
@@ -152,10 +141,7 @@
 
               <!-- Botón para cargar datos de la API -->
               <div class="api-table-actions">
-                <button
-                  *ngIf="!populationLoaded"
-                  class="btn btn-info"
-                  (click)="fetchColombiaPopulation()"
+                <button *ngIf="!populationLoaded" class="btn btn-info" (click)="fetchColombiaPopulation()"
                   [disabled]="isLoading">
                   {{ isLoading ? 'Cargando...' : 'Cargar datos de población' }}
                 </button>
@@ -166,7 +152,8 @@
             <div class="api-toggle-wrap" *ngIf="populationLoaded && colombiaPopulation.length > 0">
               <button class="api-toggle-btn" (click)="togglePopulationView()">
                 <span class="api-toggle-label">
-                  {{ showAllPopulation ? 'Mostrar primeros 18' : ('Mostrar todos (' + colombiaPopulation.length + ')') }}
+                  {{ showAllPopulation ? 'Mostrar primeros 18' : ('Mostrar todos (' + colombiaPopulation.length + ')')
+                  }}
                 </span>
               </button>
             </div>

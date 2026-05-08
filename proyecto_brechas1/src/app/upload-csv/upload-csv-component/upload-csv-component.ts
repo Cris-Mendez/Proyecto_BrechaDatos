@@ -55,7 +55,7 @@ export class UploadCsvComponent implements OnInit {
 
   /** Referencias a los gráficos (ng2-charts) para poder invocar update() */
   @ViewChild('lineChart') lineChart?: BaseChartDirective;
-  @ViewChild('barChart')  barChart?: BaseChartDirective;
+  @ViewChild('barChart') barChart?: BaseChartDirective;
 
   // ====== CONFIGURACIÓN GRÁFICO DE LÍNEAS ======
   lineChartData: ChartConfiguration<'line'>['data'] = {
@@ -91,7 +91,7 @@ export class UploadCsvComponent implements OnInit {
     labels: [],                     // años combinados (CSV/API)
     datasets: [
       { label: 'CSV/DB (Colombia)', data: [], backgroundColor: 'rgba(54, 162, 235, 0.7)' },
-      { label: 'API (Colombia)',    data: [], backgroundColor: 'rgba(255, 99, 132, 0.7)' }
+      { label: 'API (Colombia)', data: [], backgroundColor: 'rgba(255, 99, 132, 0.7)' }
     ]
   };
 
@@ -135,7 +135,7 @@ export class UploadCsvComponent implements OnInit {
     private apiService: ApiService,   // servicio para llamadas a API externa
     private router: Router,           // navegación
     @Inject(PLATFORM_ID) private platformId: Object // detectar plataforma
-  ) {}
+  ) { }
 
   // Ciclo de vida: al iniciar el componente
   ngOnInit(): void {
@@ -235,15 +235,15 @@ export class UploadCsvComponent implements OnInit {
     // Si es hex #rrggbb
     const hex = color.startsWith('#') ? color.substring(1) : null;
     if (hex && (hex.length === 6)) {
-      const r = parseInt(hex.slice(0,2), 16);
-      const g = parseInt(hex.slice(2,4), 16);
-      const b = parseInt(hex.slice(4,6), 16);
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
       return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
     // Si ya es rgb/rgba(...)
     if (color.startsWith('rgb')) {
-      const nums = color.replace(/rgba?\(/,'').replace(')','').split(',').map(n=>Number(n.trim()));
-      const [r,g,b] = nums;
+      const nums = color.replace(/rgba?\(/, '').replace(')', '').split(',').map(n => Number(n.trim()));
+      const [r, g, b] = nums;
       return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
     // Fallback neutro
@@ -280,7 +280,7 @@ export class UploadCsvComponent implements OnInit {
         // Progreso de carga
         if (event.type === HttpEventType.UploadProgress && event.total) {
           this.progress = Math.round((100 * event.loaded) / event.total);
-        // Respuesta final del servidor (CSV procesado)
+          // Respuesta final del servidor (CSV procesado)
         } else if (event.type === HttpEventType.Response) {
           const rows = typeof event.body === 'string' ? event.body.split('\n') : (event.body as string[]);
           this.procesarCsv(rows); // pasa las filas para graficar
@@ -452,7 +452,7 @@ export class UploadCsvComponent implements OnInit {
 
     // Años y valores crudos de la API (población)
     const apiYears = this.colombiaPopulation.map(d => String(d.TIME_PERIOD));
-    const apiRaw   = this.colombiaPopulation.map(d => Number(d.OBS_VALUE) || 0);
+    const apiRaw = this.colombiaPopulation.map(d => Number(d.OBS_VALUE) || 0);
 
     // Mapa año → población (para normalización)
     const popByYear = new Map<string, number>();

@@ -10,7 +10,7 @@ describe('Mapa', () => {
     await TestBed.configureTestingModule({
       imports: [MapaComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(MapaComponent);
     component = fixture.componentInstance;
