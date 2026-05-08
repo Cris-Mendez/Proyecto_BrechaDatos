@@ -1,0 +1,798 @@
+/* ================== CONTENEDOR GENERAL ================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+}
+
+/* ================== LAYOUT A DOS COLUMNAS ================== */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.col-left,
+.col-right {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* ================== GRÁFICA PRINCIPAL (DERECHA) ================== */
+.chart-card {
+  background: rgba(255, 255, 255, 0.653);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.chart-container {
+  height: 300px;
+  margin: 0;
+  padding: 8px 8px 0 8px;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.chart-container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ================== LEYENDA ================== */
+.legend-bar {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 170px;
+  margin: 0;
+  padding: 0 8px 8px 8px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+}
+
+.legend-bar ul {
+  list-style: none;
+  margin: 0;
+  padding: 6px 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.legend-bar li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 13px;
+  line-height: 1.2;
+  padding: 2px 4px;
+  border-radius: 6px;
+  max-width: 100%;
+  word-break: break-word;
+}
+
+.legend-item--hidden {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+/* ================== CONTROLES ================== */
+.controls {
+  margin-top: 16px;
+}
+
+.navigation-buttons {
+  margin: 8px 0 12px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 8px;
+  max-width: 100%;
+}
+
+/* ================== COMPARATIVO ================== */
+.compare-card {
+  margin-top: 16px;
+  background: #ffffffac;
+  border: 1px solid rgba(0, 0, 0, .06);
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .06);
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.compare-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px 0 12px;
+  width: 100%;
+}
+
+.compare-header h3 {
+  margin: 0;
+}
+
+.muted {
+  color: #6b7280;
+  font-weight: normal;
+  font-size: .9rem;
+}
+
+.compare-legend {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.legend-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  user-select: none;
+}
+
+.legend-check input {
+  transform: translateY(1px);
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+  border: 1px solid rgba(0, 0, 0, .15);
+}
+
+.sw-csv {
+  background: rgba(54, 162, 235, 0.7);
+}
+
+.sw-api {
+  background: rgba(255, 99, 132, 0.7);
+}
+
+.compare-canvas {
+  height: 360px;
+  padding: 8px 12px 12px 12px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* ================== RESPONSIVO ================== */
+/* <= 1200px: reducir un poco alturas/espaciados para pantallas medianas */
+@media (max-width: 1200px) {
+  .layout {
+    gap: 20px;
+  }
+
+  .chart-container {
+    height: 290px;
+  }
+
+  .compare-canvas {
+    height: 340px;
+  }
+
+  .compare-header {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+}
+
+/* <= 1024px: dos columnas aún, pero más compactas */
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .chart-container {
+    height: 280px;
+  }
+
+  .compare-canvas {
+    height: 320px;
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+}
+
+/* <= 900px: una columna (lo que ya tenías) + ajustes de tamaños */
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-container {
+    height: 280px;
+  }
+
+  .legend-bar {
+    max-height: 150px;
+  }
+
+  .compare-canvas {
+    height: 300px;
+  }
+}
+
+/* <= 768px: móvil grande / tablet vertical */
+@media (max-width: 768px) {
+  .compare-header h3 {
+    font-size: 1rem;
+  }
+
+  .muted {
+    font-size: 0.85rem;
+  }
+
+  .legend-check {
+    font-size: 13px;
+  }
+
+  .legend-bar li {
+    font-size: 12.5px;
+    padding: 4px;
+  }
+
+  .tabs {
+    width: 100%;
+  }
+
+  .tabs .tab-btn,
+  .tabs button {
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 10px 8px;
+  }
+
+  .navigation-buttons {
+    display: flex;
+  }
+
+  .navigation-buttons .btn,
+  .navigation-buttons button {
+    width: 100%;
+  }
+
+  .chart-container {
+    height: 260px;
+  }
+
+  .compare-canvas {
+    height: 280px;
+  }
+}
+
+/* <= 576px: móvil — apilar inputs/botones y ampliar áreas de toque */
+@media (max-width: 576px) {
+  .compare-header {
+    padding: 10px 10px 0;
+  }
+
+  .compare-legend {
+    gap: 10px;
+  }
+
+  .chart-card {
+    border-radius: 8px;
+  }
+
+  .legend-bar {
+    max-height: 140px;
+    padding: 0 6px 6px;
+  }
+
+  /* Fila file input + botón: apilar en una columna */
+  .file-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .tab-content input[type="file"] {
+    width: 100%;
+    font-size: 13.5px;
+    padding: 10px 12px;
+  }
+
+  .tab-content .btn.btn-success,
+  .tab-content .btn.btn-warning {
+    width: 100%;
+  }
+
+  .tabs {
+    gap: 6px;
+  }
+
+  .tabs .tab-btn,
+  .tabs button {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .chart-container {
+    height: 240px;
+  }
+
+  .compare-canvas {
+    height: 260px;
+  }
+}
+
+/* ======== SOLO TABLA API (Angular-friendly theming) ======== */
+:host {
+  --api-card-border: rgba(0, 0, 0, .06);
+  --api-header-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.95) 0%, rgba(59, 130, 246, 0.25) 100%);
+  --api-wrap-bg: rgba(255, 255, 255, 0.65);
+  --api-thead-bg: rgba(255, 255, 255, 0.9);
+  --api-thead-text: #1f2937;
+  --api-tbody-text: #111827;
+  --api-row-zebra: rgba(59, 130, 246, 0.06);
+  --api-divider: rgba(0, 0, 0, .08);
+  --api-divider-soft: rgba(0, 0, 0, .06);
+  --api-muted: #4b5563;
+  --api-actions-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(59, 130, 246, 0.10));
+  --api-actions-border: rgba(0, 0, 0, .06);
+
+  /* Botón interno info (cargar) */
+  --api-info-bg: #0ea5e9;
+  --api-info-border: #0284c7;
+  --api-info-text: #ffffff;
+
+  /* Botón externo toggle */
+  --api-toggle-bg: #2563eb;
+  --api-toggle-bg-hover: #1d4ed8;
+  --api-toggle-text: #ffffff;
+  --api-toggle-ring: #3b82f6;
+  --api-toggle-shadow: rgba(37, 99, 235, .28);
+
+  /* Botones elegantes (file / subir / probar API) */
+  --file-btn-bg: linear-gradient(180deg, #f8fafc, #e2e8f0);
+  --file-btn-text: #0f172a;
+  --file-btn-border: #cbd5e1;
+  --file-btn-hover: linear-gradient(180deg, #ffffff, #e5eefc);
+  --file-btn-ring: #60a5fa;
+
+  --upload-bg: #10b981;
+  --upload-bg-hover: #059669;
+  --upload-ring: #34d399;
+  --upload-shadow: rgba(16, 185, 129, .28);
+
+  --api-warn-bg: #f59e0b;
+  --api-warn-bg-hover: #d97706;
+  --api-warn-text: #111827;
+  --api-warn-ring: #fbbf24;
+  --api-warn-shadow: rgba(245, 158, 11, .30);
+}
+
+:host-context(.dark),
+:host-context([data-theme="dark"]) {
+  --api-card-border: rgba(255, 255, 255, .10);
+  --api-header-bg: linear-gradient(90deg, rgba(17, 24, 39, 0.90) 0%, rgba(59, 130, 246, 0.25) 100%);
+  --api-wrap-bg: rgba(17, 24, 39, 0.65);
+  --api-thead-bg: rgba(31, 41, 55, 0.95);
+  --api-thead-text: #e5e7eb;
+  --api-tbody-text: #f3f4f6;
+  --api-row-zebra: rgba(59, 130, 246, 0.12);
+  --api-divider: rgba(255, 255, 255, .10);
+  --api-divider-soft: rgba(255, 255, 255, .08);
+  --api-muted: #9ca3af;
+  --api-actions-bg: linear-gradient(90deg, rgba(17, 24, 39, 0.85), rgba(59, 130, 246, 0.15));
+  --api-actions-border: rgba(255, 255, 255, .10);
+
+  --api-info-bg: #0284c7;
+  --api-info-border: #0369a1;
+  --api-info-text: #f9fafb;
+
+  --api-toggle-bg: #1d4ed8;
+  --api-toggle-bg-hover: #1e40af;
+  --api-toggle-text: #f9fafb;
+  --api-toggle-ring: #60a5fa;
+  --api-toggle-shadow: rgba(30, 64, 175, .45);
+
+  /* Botones elegantes en oscuro */
+  --file-btn-bg: linear-gradient(180deg, #1f2937, #111827);
+  --file-btn-text: #e5e7eb;
+  --file-btn-border: #374151;
+  --file-btn-hover: linear-gradient(180deg, #283548, #1b2433);
+  --file-btn-ring: #60a5fa;
+
+  --upload-bg: #059669;
+  --upload-bg-hover: #047857;
+  --upload-ring: #34d399;
+  --upload-shadow: rgba(5, 150, 105, .45);
+
+  --api-warn-bg: #d97706;
+  --api-warn-bg-hover: #b45309;
+  --api-warn-text: #f9fafb;
+  --api-warn-ring: #f59e0b;
+  --api-warn-shadow: rgba(180, 83, 9, .5);
+}
+
+/* Card y tabla */
+.api-table-card {
+  background: transparent;
+  border: 1px solid var(--api-card-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .06);
+}
+
+.api-table-header {
+  padding: 12px 14px;
+  background: var(--api-header-bg);
+  border-bottom: 1px solid var(--api-divider);
+}
+
+.api-table-header h3 {
+  margin: 0;
+}
+
+.api-table-header .muted {
+  display: block;
+  color: var(--api-muted);
+  margin-top: 2px;
+}
+
+.api-table-wrap {
+  background: var(--api-wrap-bg);
+}
+
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.api-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--api-thead-bg);
+  backdrop-filter: blur(2px);
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--api-divider);
+  color: var(--api-thead-text);
+}
+
+.api-table tbody td {
+  padding: 9px 8px;
+  border-bottom: 1px solid var(--api-divider-soft);
+  color: var(--api-tbody-text);
+}
+
+.api-table tbody tr:nth-child(even) {
+  background: var(--api-row-zebra);
+}
+
+.api-table-empty {
+  padding: 14px;
+  color: var(--api-muted);
+}
+
+.api-table-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--api-actions-bg);
+  border-top: 1px solid var(--api-actions-border);
+}
+
+/* Botón interno info (cargar) */
+.api-table-actions .btn {
+  border-radius: 8px;
+  padding: 8px 12px;
+  transition: background-color .2s, box-shadow .2s, transform .05s;
+}
+
+.api-table-actions .btn.btn-info {
+  background: var(--api-info-bg);
+  color: var(--api-info-text);
+  border: 1px solid var(--api-info-border);
+}
+
+.api-table-actions .btn.btn-info:hover:not(:disabled) {
+  filter: brightness(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .18);
+}
+
+.api-table-actions .btn.btn-info:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.api-table-actions .btn.btn-info:focus-visible {
+  outline: 2px solid var(--api-info-bg);
+  outline-offset: 2px;
+}
+
+.api-table-actions .btn.btn-info:disabled {
+  opacity: .85;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ====== BOTÓN EXTERNO (ver más / ver menos) ====== */
+.api-toggle-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.api-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: var(--api-toggle-bg);
+  color: var(--api-toggle-text);
+  box-shadow: 0 8px 18px var(--api-toggle-shadow);
+  transition: background-color .2s ease, transform .05s ease, box-shadow .2s ease;
+  cursor: pointer;
+}
+
+.api-toggle-btn:hover {
+  background: var(--api-toggle-bg-hover);
+  box-shadow: 0 10px 22px var(--api-toggle-shadow);
+}
+
+.api-toggle-btn:active {
+  transform: translateY(1px);
+}
+
+.api-toggle-btn:focus-visible {
+  outline: 2px solid var(--api-toggle-ring);
+  outline-offset: 2px;
+}
+
+.api-toggle-label {
+  font-weight: 600;
+}
+
+/* ========== BOTONES ELEGANTES (file / subir / probar API) ========== */
+/* 1) "Elegir archivo" — estiliza el botón interno del input */
+.tab-content input[type="file"] {
+  font-size: 14px;
+  color: var(--file-btn-text);
+}
+
+.tab-content input[type="file"]::file-selector-button {
+  margin-right: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--file-btn-border);
+  border-radius: 10px;
+  background: var(--file-btn-bg);
+  color: var(--file-btn-text);
+  cursor: pointer;
+  transition: background-color .2s ease, box-shadow .2s ease, transform .05s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .06);
+}
+
+.tab-content input[type="file"]::file-selector-button:hover {
+  background: var(--file-btn-hover);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .08);
+}
+
+.tab-content input[type="file"]::file-selector-button:active {
+  transform: translateY(1px);
+}
+
+.tab-content input[type="file"]:focus-visible::file-selector-button {
+  outline: 2px solid var(--file-btn-ring);
+  outline-offset: 2px;
+}
+
+/* 2) Botón "Subir CSV" (verde elegante) */
+.tab-content .btn.btn-success {
+  background: var(--upload-bg);
+  color: #ffffff;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  box-shadow: 0 8px 18px var(--upload-shadow);
+  transition: background-color .2s ease, transform .05s ease, box-shadow .2s ease, filter .2s ease;
+}
+
+.tab-content .btn.btn-success:hover:not(:disabled) {
+  background: var(--upload-bg-hover);
+  box-shadow: 0 12px 26px var(--upload-shadow);
+}
+
+.tab-content .btn.btn-success:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.tab-content .btn.btn-success:focus-visible {
+  outline: 2px solid var(--upload-ring);
+  outline-offset: 2px;
+}
+
+.tab-content .btn.btn-success:disabled {
+  filter: saturate(.85);
+  opacity: .85;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* 3) Botón "Probar Conexión API" (ámbar elegante) */
+.tab-content .btn.btn-warning {
+  background: var(--api-warn-bg);
+  color: var(--api-warn-text);
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  box-shadow: 0 8px 18px var(--api-warn-shadow);
+  transition: background-color .2s ease, transform .05s ease, box-shadow .2s ease, filter .2s ease;
+}
+
+.tab-content .btn.btn-warning:hover:not(:disabled) {
+  background: var(--api-warn-bg-hover);
+  box-shadow: 0 12px 26px var(--api-warn-shadow);
+}
+
+.tab-content .btn.btn-warning:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.tab-content .btn.btn-warning:focus-visible {
+  outline: 2px solid var(--api-warn-ring);
+  outline-offset: 2px;
+}
+
+.tab-content .btn.btn-warning:disabled {
+  filter: saturate(.85);
+  opacity: .9;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ===== Leyenda interactiva (añadidos) ===== */
+.legend-bar {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 170px;
+  margin: 0;
+  padding: 0 8px 8px 8px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+}
+
+.legend-bar ul {
+  list-style: none;
+  margin: 0;
+  padding: 6px 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.legend-bar li {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 13px;
+  line-height: 1.25;
+  padding: 6px 6px;
+  border-radius: 8px;
+  transition: background-color .15s ease, opacity .15s ease;
+}
+
+.legend-bar li:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+:host-context(.dark) .legend-bar li:hover,
+:host-context([data-theme="dark"]) .legend-bar li:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, .15);
+}
+
+:host-context(.dark) .legend-swatch,
+:host-context([data-theme="dark"]) .legend-swatch {
+  border-color: rgba(255, 255, 255, .18);
+}
+
+.legend-item--hidden {
+  opacity: .45;
+  text-decoration: line-through;
+}
+
+.legend-bar li:focus {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+/* Fila para separar input y botón */
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  /* separa el botón del campo */
+  margin: 12px 0 16px;
+  max-width: 100%;
+}
+
+/* Estilo del campo de archivo (incluye el área de texto) */
+.tab-content input[type="file"] {
+  font-size: 14px;
+  color: var(--file-btn-text);
+  background: rgba(255, 255, 255, 0.75);
+  /* fondo del área de texto */
+  border: 1px solid var(--file-btn-border);
+  border-radius: 14px;
+  padding: 10px 12px;
+  /* espacio interno */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .06);
+}
+
+/* Botón nativo dentro del input */
+.tab-content input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--file-btn-border);
+  border-radius: 10px;
+  background: var(--file-btn-bg);
+  color: var(--file-btn-text);
+  cursor: pointer;
+  transition: background-color .2s ease, box-shadow .2s ease, transform .05s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .06);
+}
+
+/* Modo oscuro coherente */
+:host-context(.dark) .tab-content input[type="file"],
+:host-context([data-theme="dark"]) .tab-content input[type="file"] {
+  background: rgba(17, 24, 39, 0.65);
+  border-color: #374151;
+}

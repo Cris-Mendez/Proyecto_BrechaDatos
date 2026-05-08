@@ -1,0 +1,175 @@
+<div class="container">
+  <div class="layout">
+    <!-- Columna IZQUIERDA: contiene el mapa y el comparativo de datos -->
+    <div class="col-left">
+      <!-- Componente del mapa -->
+      <app-mapa></app-mapa>
+
+      <!-- Tarjeta de comparación CSV/DB vs API -->
+      <div class="compare-card">
+        <div class="compare-header">
+          <!-- Título de la sección con nota explicativa -->
+          <h3>📊 Comparación CSV/DB vs API (Colombia)
+            <small class="muted">valores por cada 500 habitantes</small>
+          </h3>
+          <!-- Leyenda con checkboxes para mostrar/ocultar series -->
+          <div class="compare-legend">
+            <label class="legend-check">
+              <input type="checkbox" [(ngModel)]="showCsv" (change)="applyCompareVisibility()" />
+              <span class="swatch sw-csv"></span> CSV/DB (Colombia)
+            </label>
+            <label class="legend-check">
+              <input type="checkbox" [(ngModel)]="showApi" (change)="applyCompareVisibility()" />
+              <span class="swatch sw-api"></span> API (Colombia)
+            </label>
+          </div>
+        </div>
+
+        <!-- Gráfico comparativo en barras -->
+        <div class="chart-container compare-canvas">
+          <div *ngIf="isBrowser">
+            <canvas baseChart #barChart="base-chart" [data]="barChartData" [options]="barChartOptions" [type]="'bar'">
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna DERECHA: gráfica principal + controles -->
+    <div class="col-right">
+      <div class="chart-card">
+        <div class="chart-container">
+          <!-- Gráfico principal en líneas -->
+          <div *ngIf="isBrowser">
+            <canvas baseChart #lineChart="base-chart" [data]="lineChartData" [options]="lineChartOptions"
+              [type]="'line'">
+            </canvas>
+          </div>
+        </div>
+
+        <!-- Leyenda/filtros interactivos con scroll -->
+        <div class="legend-bar legend-bottom" aria-label="Filtros de series (clic para mostrar/ocultar)">
+          <ul>
+            <!-- Itera sobre los datasets y crea un ítem de leyenda -->
+            <li *ngFor="let ds of lineChartData.datasets; let i = index"
+              [class.legend-item--hidden]="ds.hidden === true" (click)="onLegendClickMouse(i, $event)"
+              (keydown.enter)="onLegendClickKey(i, $event)" (keydown.space)="onLegendClickKey(i, $event)"
+              (mouseenter)="onLegendHoverEnter(i)" (mouseleave)="onLegendHoverLeave()" tabindex="0">
+              <!-- Cuadro de color de la serie -->
+              <span class="legend-swatch" [style.background]="getDatasetColor(i)"></span>
+              <span>{{ ds.label }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Controles: pestañas para CSV o API -->
+      <div class="controls">
+        <div class="tabs">
+          <button class="tab-btn" [class.active]="activeTab === 'upload'" (click)="setActiveTab('upload')">Subir
+            CSV</button>
+          <button class="tab-btn" [class.active]="activeTab === 'api'" (click)="setActiveTab('api')">Conectar
+            API</button>
+        </div>
+
+        <!-- Botón de navegación a priorización (cuando hay CSV cargado) -->
+        <div class="navigation-buttons" *ngIf="activeTab === 'upload' && csvLoaded">
+          <button class="btn btn-primary" (click)="goToPriorizacion()">Ir a Prioridad</button>
+        </div>
+
+        <!-- 📂 Pestaña: Subir CSV -->
+        <div *ngIf="activeTab === 'upload'" class="tab-content">
+          <h2>Subir Archivo CSV</h2>
+
+          <!-- Fila con input de archivo y botón de subir -->
+          <div class="file-row">
+            <input type="file" (change)="onFileSelected($event)" accept=".csv" />
+            <button class="btn btn-success" (click)="onUpload()" [disabled]="!selectedFile || progress > 0">
+              Subir CSV
+            </button>
+          </div>
+
+          <!-- Mensaje mientras se carga el archivo -->
+          <div *ngIf="isUploading" class="uploading-msg">
+            📂 Archivo cargándose… este proceso puede tardar unos minutos, este atento a la alerta.
+          </div>
+        </div>
+
+        <!-- 🌐 Pestaña: Conectar API -->
+        <div *ngIf="activeTab === 'api'" class="tab-content">
+          <!-- Vista cuando la API está conectada -->
+          <div *ngIf="isConnected; else notConnected">
+            <div class="api-table-card">
+              <div class="api-table-header">
+                <h3>📊 Población de Colombia (2000–2020)</h3>
+                <small class="muted">Vista previa de 18 registros</small>
+              </div>
+
+              <!-- Tabla con los datos de la API -->
+              <div class="api-table-wrap" *ngIf="colombiaPopulation.length > 0; else emptyPopulation">
+                <table class="api-table">
+                  <thead>
+                    <tr>
+                      <th>Año</th>
+                      <th>Código País</th>
+                      <th>Población</th>
+                      <th>Unidad</th>
+                      <th>Sexo</th>
+                      <th>Edad</th>
+                      <th>Área</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Itera sobre población para mostrar filas -->
+                    <tr *ngFor="let item of displayedPopulation">
+                      <td>{{ item.TIME_PERIOD }}</td>
+                      <td>{{ item.REF_AREA }}</td>
+                      <td>{{ item.OBS_VALUE | number }}</td>
+                      <td>{{ item.UNIT_MEASURE }}</td>
+                      <td>{{ item.SEX || 'N/A' }}</td>
+                      <td>{{ item.AGE || 'N/A' }}</td>
+                      <td>{{ item.URBANISATION || 'N/A' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Mensaje si no hay datos -->
+              <ng-template #emptyPopulation>
+                <div class="api-table-empty">No se encontraron datos de población para Colombia.</div>
+              </ng-template>
+
+              <!-- Botón para cargar datos de la API -->
+              <div class="api-table-actions">
+                <button *ngIf="!populationLoaded" class="btn btn-info" (click)="fetchColombiaPopulation()"
+                  [disabled]="isLoading">
+                  {{ isLoading ? 'Cargando...' : 'Cargar datos de población' }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Botón para alternar entre vista previa o completa -->
+            <div class="api-toggle-wrap" *ngIf="populationLoaded && colombiaPopulation.length > 0">
+              <button class="api-toggle-btn" (click)="togglePopulationView()">
+                <span class="api-toggle-label">
+                  {{ showAllPopulation ? 'Mostrar primeros 18' : ('Mostrar todos (' + colombiaPopulation.length + ')')
+                  }}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Vista cuando la API no está conectada -->
+          <ng-template #notConnected>
+            <button class="btn btn-warning" (click)="checkAPIConnection()" [disabled]="isLoading">
+              {{ isLoading ? 'Conectando...' : 'Probar Conexión API' }}
+            </button>
+            <p *ngIf="!isLoading && !isConnected">
+              Por favor presione el botón. Si continúa viendo este mensaje,<br> la API no está conectando.
+            </p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

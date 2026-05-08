@@ -1,0 +1,17 @@
+<div class="map-container">
+  <!-- 🗺️ Contenedor visual del mapa -->
+  <div class="map-card">
+    <div #chart class="map-chart"></div>
+  </div>
+
+  <!-- 🔍 Buscador -->
+  <div class="map-footer">
+    <input class="buscador" type="text" placeholder="Buscar país..." (keyup.enter)="buscarPais($event)" />
+  </div><br>
+
+  <div class="info-box">
+    🌍 Cada país está coloreado según su valor de observación.<br />
+    🔍 Usa la barra de búsqueda para encontrar un país y acercar la vista.<br />
+    🖱️ También puedes hacer <b>zoom</b> y mover el mapa con el ratón.
+  </div>
+</div>
